@@ -1,0 +1,1732 @@
+body {
+  height: 100%;
+  margin: 0;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.4rem;
+  overflow-x: hidden;
+}
+
+.btn-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  border: 0;
+  padding: 8px 15px 8px 10px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.Grid5AdjCol {
+  display: grid;
+  grid-template-columns: 0.2fr 0.3fr 0.3fr 1fr 0.1fr;
+}
+
+/*  */
+.tablink.active,
+.tablink .SearchFromBack {
+  background-color: #3f4fa2;
+  color: #fff;
+}
+
+.tablink.active .SearchFromBack {
+  background-color: #fff;
+}
+
+.tablink.active .SearchFromBack svg {
+  fill: #3f4fa2;
+}
+
+.tablink .SearchFromBack svg {
+  fill: #fff;
+}
+
+.mobileSearchInput {
+  display: none;
+}
+
+.searchForm {
+  position: relative;
+  background: url("../img/search-form-Img/searchFormImage.jpg") no-repeat;
+  background-repeat: repeat;
+  background-size: cover;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: space-between;
+  height: 100%;
+  width: 100%;
+}
+
+.searchFormBody {
+  width: 100%;
+  margin-top: 50px;
+}
+
+.searchFormText {
+  text-align: center;
+  color: #fff;
+}
+
+.searchFormTabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.searchFormTabs .tablink:not(:nth-child(2)) {
+  margin-right: 20px;
+}
+
+.searchFormTextTitle {
+  font-weight: 600;
+  width: 40%;
+  margin: auto;
+  line-height: 60px;
+  font-size: 52px;
+}
+
+.SearchFromBack {
+  height: 36px;
+  width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.searchFormWrapper {
+  width: 100%;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.SearchTripType,
+.HotelSearchType {
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 5px !important;
+}
+
+/*  */
+/* triptype tab */
+.SearchTripTypeTabs {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+  align-items: flex-start;
+  /* flex-direction: column; */
+  background-color: #fff !important;
+  margin-bottom: 20px;
+}
+
+.content {
+  display: none;
+  opacity: 0;
+  width: 100%;
+  -webkit-animation: display-none-transition 1s ease;
+  animation: display-none-transition 1s ease;
+}
+
+.TripTypeBtn {
+  font-size: 15px;
+  padding: 8px 15px;
+  border: 1.5px solid transparent;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.TripTypeBtn.active1 {
+  border: 1.5px solid #3f4fa2;
+  color: #3f4fa2;
+  border-radius: 5px;
+}
+
+.content-section .active1 {
+  display: block;
+  opacity: 1;
+}
+
+.searchFormRTCard {
+  /* margin-bottom: 10px; */
+  position: relative;
+  display: grid;
+  flex-wrap: wrap;
+  grid-template-columns: 1.5fr 1.2fr 0.8fr 0.3fr;
+}
+
+.searchFormRT_ToFromSearch {
+  height: 80px;
+}
+
+.toFromSearchWrapper {
+  display: flex;
+  width: 100%;
+  position: relative;
+  height: 100%;
+}
+
+.toFromSearchOrigin,
+.toFromSearchDepart {
+  display: flex;
+  border: 1px #dcd9d9 solid;
+  border-radius: 5px;
+  position: relative;
+  flex: 0 0 auto;
+  width: 50%;
+  margin-bottom: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 0;
+}
+
+.toOrigin {
+  display: flex;
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 0px;
+}
+
+.toOriginIcon {
+  margin-right: 10px;
+}
+
+.ReturnFormHeadText {
+  align-self: center;
+}
+
+/* .toDepartIcon{
+
+} */
+.toOriginIcon .material-icons,
+.toDepartIcon .material-icons,
+.searchDateFormIcon .material-icons,
+.TravelerIcon .material-icons,
+.HotelSearchFormIcon .material-icons {
+  background-color: #3f4fa2;
+  font-size: 20px;
+  padding: 3px;
+  border-radius: 25px !important;
+  color: #fff;
+}
+
+.toOriginIcon .material-icons {
+  transform: rotateZ(50deg);
+}
+
+.toDepartIcon .material-icons {
+  transform: rotateZ(130deg);
+  margin-right: 10px;
+}
+
+.toDepart {
+  display: flex;
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 0px;
+  padding-left: 20px !important;
+}
+
+.toOriginContent h4 {
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.2;
+  color: inherit;
+  font-size: 14px;
+}
+
+h4 {
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.2;
+  color: inherit;
+  font-size: 14px;
+}
+
+.toOriginContent input,
+.ToDepartContent input {
+  position: absolute;
+  left: 0;
+  bottom: 10px;
+  width: 75%;
+  border: 0 !important;
+  font-size: 14px;
+  font-weight: 500;
+  padding-left: 45px;
+}
+
+.toOriginContent input:focus,
+.ToDepartContent input:focus {
+  outline: none;
+}
+
+.ToDepartContent input {
+  left: 13px !important;
+}
+
+::-webkit-input-placeholder {
+  opacity: 1;
+  color: #000000;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.toOriginPopular,
+.toDepartPopular {
+  background: #3f4fa2;
+  color: white;
+  font-weight: 700;
+  padding: 5px 15px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.travelerBtnGrp button .travelerCircal,
+.travelerBtnGrp button .material-icons {
+  display: none;
+}
+
+@keyframes display-none-transition {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+
+  1% {
+    display: block;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes display-none-transition {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+
+  1% {
+    display: block;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/*  */
+.dropbtn {
+  background-color: #3498db;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover,
+.dropbtn:focus {
+  background-color: #2980b9;
+}
+
+.dropdown-content,
+.depart-content,
+.travel-content {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  z-index: 1;
+  outline: #e6e6e6 solid 1px;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {
+  background-color: #ddd;
+}
+
+.show {
+  display: block;
+  top: 82px;
+  left: 0;
+  min-width: 350px;
+  width: fit-content;
+  max-height: 240px;
+  overflow: auto;
+}
+
+.showdepart {
+  display: block;
+  top: 82px;
+  left: 0;
+  min-width: 350px;
+  width: fit-content;
+  max-height: 240px;
+  overflow: auto;
+}
+
+/* .cal__container{
+  /* display: none !important; */
+*/ .showtravel {
+  display: block;
+  width: 275px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgb(0 0 0 / 15%);
+  top: 0;
+}
+
+.showCalender {
+  display: block;
+}
+
+.dropdown-item {
+  padding: 10px !important;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.dropdown-wrapper {
+  display: block !important;
+  padding: 0;
+  margin: 0;
+}
+
+.autoCompleteIcon {
+  padding-right: 15px;
+}
+
+.autoCompleteIcon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.ListTypeCity {
+  margin-right: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+}
+
+.ListTypeCity span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.airportCode {
+  border-radius: 5px;
+  background: #3f4fa2;
+  color: #fff;
+  text-align: center;
+  width: 40px;
+  font-size: 14px;
+}
+
+.toFromSearchSweep {
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  top: 28%;
+  left: 50%;
+  flex-shrink: 0;
+  background: #fff;
+  border: 1px solid #e9e9e9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  cursor: pointer;
+  border-radius: 5px;
+  transform: translateX(-50%);
+}
+
+.toFromSearchSweep .material-icons {
+  opacity: 1;
+  transform: rotate(0deg) !important;
+  transition: all 0.5s ease 0s !important;
+  font-size: 20px;
+}
+
+.toFromSearchSweep .material-icons:hover {
+  transform: rotate(180deg) !important;
+}
+
+.toFromSearchDepart {
+  position: relative;
+  flex: 0 0 auto;
+  width: 50%;
+  margin-bottom: 0;
+  display: flex;
+  border: 1px #dcd9d9 solid;
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.searchFormRT_ToFromDate,
+.TravelerClass {
+  height: 100%;
+}
+
+.searchDate {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 10px;
+  border: 1px #dcd9d9 solid;
+  margin-bottom: 0;
+  border-radius: 5px;
+  height: 100%;
+}
+
+.searchDateForm,
+.searchDateTo {
+  flex: 0 0 44%;
+  max-width: 50%;
+  display: flex;
+  padding: 10px;
+  margin-bottom: 0;
+  position: relative;
+  /* height: 55px; */
+}
+
+.searchDateTo {
+  border-left: 1px solid #dcd9d9;
+}
+
+.TravelerIcon,
+.searchDateFormIcon {
+  margin-right: 10px;
+}
+
+.searchDateFormHead input {
+  margin-top: 20px;
+  position: absolute;
+  padding: 3px 14px;
+  left: 32px;
+  border: 0;
+}
+
+.searchDateFormHead input:focus {
+  outline: none;
+  border: 0;
+}
+
+.searchDateHeadArrival input {
+  margin-top: 20px;
+  position: absolute;
+  padding: 3px 10px;
+  left: 0;
+  border: 0;
+  padding-right: 0;
+}
+
+.searchDateHeadArrival input:focus {
+  outline: none;
+  border: 0;
+}
+
+.TravelerClassWrapper {
+  border: 1px solid #dcd9d9;
+  margin-bottom: 0;
+  border-radius: 5px;
+  height: 100%;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.TravelerClassWrapper a:not([href]) {
+  color: inherit;
+  text-decoration: none;
+}
+
+.TravelerClassBox {
+  position: relative;
+  display: flex;
+  padding: 10px;
+  margin-bottom: 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.TravelerClassCount {
+  margin-top: 5px;
+}
+
+.TravelerClassCount h5 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 0 !important;
+}
+
+.TravelerCountClass {
+  padding: 10px;
+  padding-bottom: 4px;
+}
+
+.TravelerCountClass h4 {
+  font-weight: 550;
+  margin-bottom: 5px;
+}
+
+.travelerBtnGrp button {
+  padding: 5px 10px;
+  border: 1px solid #e9e9e9;
+  color: #000;
+  background: #fff !important;
+  border-radius: 5px;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  margin-right: 6px;
+}
+
+.travelerBtnGrp button:focus {
+  border: 1px solid #3f4fa2;
+}
+
+/* mobile back */
+
+.mobileBack {
+  display: none;
+}
+
+/* mobile back */
+
+.SearchBtn {
+  border: none;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  border-radius: 5px;
+  background: #3f4fa2;
+  color: #fff;
+  cursor: pointer;
+}
+
+.AddTravelerCount {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-top: 1px solid #eee;
+}
+
+.TravelerType {
+  width: 60%;
+  font-size: 14px;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.TravelerSteps {
+  width: 40%;
+  display: flex;
+  justify-content: end;
+}
+
+.TravelerSteps button {
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 25px;
+  width: 25px;
+  min-width: unset;
+  line-height: unset;
+  background-color: #c3ac6c;
+  border: 0;
+  color: #fff;
+  border-radius: 5px;
+}
+
+.MCToFromDate {
+  position: relative;
+}
+
+.closeMulticityCard {
+  position: absolute;
+  right: -39px;
+  top: 41%;
+  cursor: pointer;
+}
+
+.closeRoomCard {
+  right: -39px;
+  top: 41%;
+  cursor: pointer;
+}
+
+.hotelBtn {
+  height: 72px !important;
+}
+
+.opacity {
+  opacity: 0.6;
+}
+
+.TravelerSteps input {
+  height: 25px;
+  width: 25px;
+  text-align: center;
+  border: 0;
+  background: transparent;
+}
+
+.TravelerCountClassFooter {
+  padding: 10px;
+  text-align: right;
+}
+
+.TravelerCountClassFooter button:nth-child(1),
+.TravelerCountClassFooter button:nth-child(2) {
+  padding: 8px 20px;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #fff;
+}
+
+.TravelerCountClassFooter button:nth-child(1) {
+  background-color: #000;
+}
+
+.TravelerCountClassFooter button:nth-child(2) {
+  background-color: #c3ac6c;
+}
+
+.TravelerCountNumber h4 {
+  display: none;
+}
+
+.expander_button {
+  background: transparent;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.expander_button .material-icons {
+  font-size: 22px;
+}
+
+.AdvancedSearchFromSection,
+.PrefAirline {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.AdvancedSearchFromOpt {
+  margin-right: 30px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.SearchFromOptCheck {
+  display: flex;
+  align-items: center;
+}
+
+.SearchFromOptCheck label,
+.PrefAirline label {
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.SearchFromOptCheck:not(:last-child) {
+  margin-right: 20px;
+}
+
+.multiCityCard {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+
+.multiCityBody {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  height: 83px;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.multiCityRemove {
+  display: none;
+}
+
+/* select */
+
+.PrefAirline select {
+  margin-left: 15px;
+  padding: 8px 4px;
+  width: 200px;
+  height: 36px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.AdvancedSearchFromMobi {
+  display: none;
+}
+
+.MCTravelerClass {
+  height: 84px;
+  display: flex;
+}
+
+.Flex-w {
+  width: 75%;
+}
+
+.MCSrhBtn {
+  width: 25%;
+}
+
+.addMoreMC {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+/* hotel section started */
+.HotelSearchForm {
+  display: flex;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  height: 50px;
+  padding: 10px;
+  position: relative;
+  background-color: #fff;
+}
+
+.HotelSearchOtion {
+  position: absolute;
+  background: rgb(255, 255, 255);
+  /* left: 0px; */
+  /* top: 72px; */
+  border: 1px solid rgb(230, 230, 230);
+  border-radius: 5px;
+  height: 245px;
+  overflow-x: auto;
+  width: 309px;
+  /* max-width: 315px; */
+}
+
+.HotelNationalSelectOption {
+  position: absolute;
+  background: rgb(255, 255, 255);
+  /* left: 0px; */
+  /* top: 72px; */
+  border: 1px solid rgb(230, 230, 230);
+  border-radius: 5px;
+  height: 245px;
+  overflow-x: auto;
+  min-width: 210px;
+}
+
+.HotelPaxSelectOption {
+  position: absolute;
+  background: rgb(255, 255, 255);
+  left: 0px;
+  top: 72px;
+  border: 1px solid rgb(230, 230, 230);
+  border-radius: 5px;
+  min-width: 210px;
+}
+
+.HotelSearchOtionContent {
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.HotelSearchOtionContent:hover {
+  background-color: #e8e8e8;
+}
+
+.HotelSearchOtionContent a {
+  font-size: 14px;
+  text-decoration: none;
+  color: #000;
+}
+
+.HotelSearchOtionContent .material-icons {
+  background-color: transparent;
+  height: 26px;
+  padding: 3px;
+  margin-right: 10px;
+  font-size: 24px;
+}
+
+.showHotelDestini,
+.showopenNationality,
+.showRoomPax {
+  display: block !important;
+}
+
+.HotelSearchSelectOption,
+.roomPaxDetails {
+  display: none;
+}
+
+.roomPaxDetails {
+  position: absolute;
+  bottom: 27%;
+}
+
+.HotelSearchMain {
+  display: flex;
+  align-items: center;
+}
+
+.HotelSearchDestination {
+  max-width: 25%;
+  width: 100%;
+}
+
+.HotelSearchFormNationality {
+  max-width: 16.99999%;
+  width: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.HotelSearchFormCalender {
+  max-width: 33.3333333%;
+  width: 100%;
+}
+
+.RoomCount {
+  width: 100%;
+  max-width: 16.99999%;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.hotelSrhbtn {
+  max-width: 8%;
+  width: 100%;
+}
+
+.searchFormButton button {
+  height: 100%;
+}
+
+.HotelSearchFormIcon {
+  margin-right: 10px;
+}
+
+.HotelSearchFormDetails {
+  width: 100%;
+  position: relative;
+}
+
+.HotelSearchFormDetails input {
+  border: 1px solid white;
+  width: 100%;
+  font-size: 14px;
+  margin-top: 0;
+  position: absolute;
+  bottom: 0;
+  text-overflow: ellipsis;
+  outline: 0px !important;
+  padding: 0;
+}
+
+.nightCountgBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex: 0 0 14%;
+  max-width: 14%;
+  margin: 0 8px;
+}
+
+.BgOfNights {
+  color: #fff !important;
+  background-color: #3f4fa2 !important;
+  padding: 6px 8px;
+  border-radius: 5px !important;
+  line-height: 16px;
+}
+
+.BgOfNights p {
+  margin: 0 !important;
+  font-size: 14px;
+}
+
+.SearchFormCalender {
+  display: flex;
+  /* margin: 0 10px; */
+  background-color: #fff;
+  border: 1px #dcd9d9 solid;
+  margin-bottom: 0;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.HotelFormLabel {
+  flex: 0 0 37%;
+  max-width: 51%;
+  position: relative;
+  height: 50px;
+  display: flex;
+  padding: 10px;
+  margin-bottom: 0;
+}
+
+.hideInput {
+  display: none;
+}
+
+.HotelNoageChild {
+  display: grid;
+  max-width: 345px;
+  grid-gap: 10px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.roomPaxWrap {
+  margin-top: 20px;
+}
+
+.HotelTravelerTypeAdult {
+  grid-column-start: 2;
+}
+
+.HotelTravelerTypeAdult h4,
+.HotelTravelerTypeChild h4 {
+  text-align: center;
+}
+
+.HotelNoageChildContent h4,
+.HotelNoRoomTitle h4 {
+  font-size: 14px;
+}
+
+.HotelNoRoomWrapper {
+  display: grid;
+  grid-template-columns: 0.2fr 0.3fr 0.3fr 1fr 0.1fr;
+  padding: 1rem 0rem;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.HotelNoRoomTitle {
+  display: flex;
+  align-items: center;
+}
+
+.HotelTravelerSteps {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.HotelTravelerSteps input {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  border: 0;
+  background: transparent;
+  font-size: 14px;
+}
+
+.HotelTravelerSteps button {
+  box-sizing: border-box;
+  position: relative;
+  padding: 0 !important;
+  user-select: none;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  white-space: nowrap;
+  text-decoration: none;
+  vertical-align: baseline;
+  text-align: center;
+  margin: 0;
+  min-width: 28px;
+  height: 28px;
+  line-height: 36px;
+  border-radius: 4px;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #c3ac6c;
+}
+
+.HotelTravelerSteps button .material-icons {
+  font-size: 24px;
+  color: #fff;
+}
+
+.select_control {
+  padding: 2px 5px;
+  width: 100%;
+}
+
+.HotelNoageChildPara {
+  text-align: center;
+}
+
+.addMoreTravller {
+  cursor: pointer;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding-top: 1rem;
+  padding-left: 0;
+}
+
+.addMoreTravller h5 {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  margin: 0 !important;
+}
+
+.moreOptionWrapper {
+  display: none;
+}
+
+.showPax {
+  display: block;
+}
+
+.hotelPaxMobile {
+  display: none;
+}
+
+@media screen and (max-width: 960px) {
+  body {
+    width: 100%;
+  }
+
+  /* mobile back */
+  .AdvancedSearchFromMobi {
+    display: block;
+  }
+
+  .AdvancedSearchFrom {
+    display: none;
+  }
+
+  .mobileBack {
+    display: block !important;
+    background: #3f4fa2;
+    color: #fff;
+    box-shadow: 0px 2px 5px 0 rgb(0 0 0 / 10%);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 56px;
+    z-index: 1;
+    left: 0;
+  }
+
+  .mobileHead {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 56px;
+  }
+
+  .mobileBackButton {
+    height: 45px;
+    width: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* background: #3f4fa2; */
+    color: #fff;
+    border: 0;
+    border-radius: 50%;
+    margin: 0 !important;
+    background-color: transparent;
+  }
+
+  .mobileBackButton .material-icons {
+    color: #fff !important;
+    margin: 0 !important;
+  }
+
+  .mobileTitle {
+    margin-left: 15px;
+  }
+
+  .mobileTitle h4 {
+    margin-bottom: 0 !important;
+    font-size: 18px !important;
+    font-weight: 600;
+    margin-bottom: 4px;
+    letter-spacing: 0.2px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  /* mobile back */
+  .searchForm {
+    height: 200px !important;
+  }
+
+  .searchFormBody {
+    margin-top: 0;
+    height: 100%;
+  }
+
+  .searchFormText {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .searchFormTextTitle {
+    width: 100%;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .toFromSearchOrigin,
+  .toFromSearchDepart {
+    width: 100%;
+    border: 1px #dcd9d9 solid !important;
+    border-radius: 5px;
+  }
+
+  .toFromSearchOrigin {
+    margin-bottom: 10px;
+  }
+
+  .searchFormTabs {
+    display: flex;
+    overflow: auto;
+    position: absolute;
+    top: unset;
+    bottom: -65px;
+    margin-top: 0px;
+    padding-bottom: 10px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .TripTypeBtn.active1 {
+    border: none;
+    border-bottom: 1px solid #3f4fa2 !important;
+    border-radius: 0;
+  }
+
+  .toFromSearchSweep {
+    left: unset !important;
+    top: 36%;
+    right: 5%;
+    border-radius: 4px !important;
+    transform: rotate(90deg);
+  }
+
+  .searchFormBody .container,
+  .searchFormRT_ToFromSearch {
+    height: 100%;
+  }
+
+  .searchFormRTCard {
+    grid-template-columns: 1fr;
+    grid-row-gap: 10px;
+  }
+
+  .searchFormTabs .tablink:not(:nth-child(2)) {
+    margin-right: 10px !important;
+  }
+
+  .searchDateHeadArrival input {
+    position: relative;
+  }
+
+  .searchDateHeadArrival input,
+  .toOriginContent input,
+  .ToDepartContent input {
+    padding: 0;
+  }
+
+  .toFromSearchWrapper {
+    flex-wrap: wrap;
+  }
+
+  .searchFormWrapper {
+    position: absolute;
+    top: 54px;
+    height: 100vh;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .dropdown,
+  .depart {
+    position: unset !important;
+    width: 100%;
+    left: unset !important;
+  }
+
+  .toDepart {
+    padding: 10px !important;
+  }
+
+  .searchDate {
+    width: 100%;
+  }
+
+  .SearchTripType {
+    padding: 5px 15px;
+  }
+
+  .TravelerClassWrapper,
+  .searchDate {
+    margin: 0;
+  }
+
+  .toOriginIcon .material-icons,
+  .toDepartIcon .material-icons,
+  .searchDateFormIcon .material-icons,
+  .TravelerIcon .material-icons {
+    font-size: 24px;
+  }
+
+  .SearchBtn {
+    height: 48px !important;
+  }
+
+  .SearchTripType ul {
+    overflow: auto;
+  }
+
+  .SearchBtn .material-icons {
+    margin-top: 4px;
+  }
+
+  .show,
+  .showdepart,
+  .showtravel {
+    width: 100%;
+    /* min-width: 395px; */
+    left: 0;
+    height: 100vh;
+    z-index: 9;
+    max-height: unset;
+    margin-top: 55px;
+    position: fixed;
+    top: 0;
+  }
+
+  /* .show {
+    top: -112px;
+  } */
+
+  /* .showdepart {
+    top: -189px;
+  } */
+  .showtravel {
+    top: -111px;
+  }
+
+  .mobileSearchInput {
+    padding: 10px 15px;
+    position: relative;
+    padding-bottom: 4px;
+    display: block;
+    /* margin-top: 50px; */
+  }
+
+  .HotelSearchOtion .mobileSearchInput {
+    margin-top: 50px;
+  }
+
+  .mobileSearchInput .mobileSearch {
+    border: 1px solid #e6e6e6 !important;
+    position: relative;
+    padding: 12px 15px;
+    width: 82%;
+    margin-top: 12px;
+    border-radius: 5px;
+    padding-left: 45px;
+    left: unset !important;
+  }
+
+  .mobileSearchInput .material-icons {
+    position: absolute;
+    top: 32%;
+    left: 28px;
+  }
+
+  .showtravel .mobileSearchInput .material-icons {
+    top: 32px !important;
+  }
+
+  .SelectTravelerCount {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .TravelerCountClass {
+    padding: 0;
+  }
+
+  .TravelerCountClassFooter {
+    position: fixed;
+    bottom: 0;
+    width: 88%;
+  }
+
+  .TravelerCountClassFooter button {
+    width: 49%;
+  }
+
+  .TravelerCountNumber h4,
+  .TravelerCountClass h4 {
+    display: block;
+    font-weight: 600;
+    padding: 15px;
+    background-color: #e8e8e8;
+    margin-bottom: 0;
+    font-size: 16px;
+  }
+
+  .travelerBtnGrp button {
+    width: 100%;
+    text-align: start;
+    padding: 15px;
+    border: 0;
+    font-size: 15px;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .travelerBtnGrp button .material-icons {
+    font-size: 16px;
+    background: #3f4fa2;
+    height: 20px;
+    width: 20px;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .travelerBtnGrp button .travelerCircal {
+    display: inline-block;
+    height: 15px;
+    width: 15px;
+    border: 2px solid #000;
+    border-radius: 50%;
+  }
+
+  .TripTypeBtn {
+    border-bottom: 1px solid transparent;
+  }
+
+  .AdvancedSearchFromSection {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-row-gap: 15px;
+    margin-top: 10px;
+  }
+
+  .PrefAirline,
+  .PrefAirline label {
+    display: block;
+  }
+
+  .PrefAirline label {
+    margin-bottom: 5px;
+  }
+
+  .PrefAirline select {
+    margin: 0;
+    width: 100%;
+  }
+
+  .multiCityBody,
+  .multiCityCard {
+    grid-template-columns: 1fr;
+    height: unset !important;
+    margin-bottom: 0px;
+  }
+
+  .multiCityRemove {
+    display: block;
+    order: 1;
+
+    position: relative !important;
+    right: 0 !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100%;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    height: 30px !important;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    text-align: right !important;
+    margin-bottom: 0px !important;
+    border-radius: 0px !important;
+    background-color: rgba(42, 142, 248, 0.1);
+    border-top-left-radius: 4px !important;
+    border-top-right-radius: 4px !important;
+  }
+
+  .multiCityFlightText {
+    font-size: 14px;
+    padding-left: 10px;
+  }
+
+  .order2 {
+    order: 2;
+  }
+
+  .order3 {
+    order: 3;
+  }
+
+  .MCTravelerClass {
+    display: block;
+  }
+
+  .Flex-w {
+    width: 100%;
+  }
+
+  .MCSrhBtn {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .addMoreMC {
+    padding: 15px;
+    justify-content: center;
+  }
+
+  .multiCityRemove {
+    margin-top: 10px;
+  }
+
+  .toFromSearchDepart {
+    margin-bottom: 10px;
+  }
+
+  /* hotel */
+  .HotelSearchType {
+    height: 100vh;
+  }
+
+  .hotelBtn {
+    height: 50px;
+  }
+
+  .HotelSearchMain {
+    position: absolute;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+    width: 92%;
+  }
+
+  .HotelSearchDestination,
+  .HotelSearchFormNationality,
+  .HotelSearchFormCalender,
+  .RoomCount,
+  .hotelSrhbtn {
+    max-width: 100%;
+  }
+
+  .HotelSearchFormNationality,
+  .RoomCount {
+    margin: 0 !important;
+  }
+
+  .showPaxCount {
+    display: none;
+  }
+
+  .roomPaxWrap {
+    height: 100%;
+    position: absolute;
+    top: -10px;
+    background: #fff;
+    width: 100%;
+  }
+
+  .HotelPaxSelectOption {
+    height: 100vh;
+    top: 0;
+    position: fixed;
+    width: 100%;
+    z-index: 99;
+  }
+
+  .HotelPaxSelectOption {
+    display: none;
+  }
+
+  .HotelSearchOtion {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: #fff;
+    z-index: 99;
+    top: 0;
+    border-radius: 0;
+  }
+
+  .HotelNationalSelectOption {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 99;
+    min-width: 100%;
+    border-radius: 0;
+  }
+
+  .HotelNationalSelectOption .mobileSearchInput {
+    margin-top: 50px;
+  }
+
+  .HotelSearchOtionContent {
+    padding: 15px 10px;
+    border-bottom: 1px solid #e6e6e6;
+  }
+  .searchDateForm,
+  .searchDateTo {
+    flex: 0 0 50%;
+    max-width: 43%;
+  }
+  .searchDateHeadArrival input {
+    width: 100%;
+  }
+  .TravelDropdown {
+    position: fixed !important;
+    z-index: 9 !important;
+    top: 56px !important;
+    width: 94% !important;
+    left: 0 !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+  }
+}
+.classBtn .material-icons {
+  display: none !important;
+}
+.classBtn.classTypeBorder .material-icons {
+  display: flex !important;
+}
+.classBtn.classTypeBorder .travelerCircal {
+  display: none;
+}
+/* .showPaxCount {
+  display: block !important;
+  box-shadow: 0 0 10px rgb(0 0 0 / 15%);
+} */
+
+.TravelDropdown {
+  position: absolute;
+  top: 50%;
+  box-shadow: rgb(0 0 0 / 10%) 0px 1px 3px 0px, rgb(0 0 0 / 6%) 0px 1px 2px 0px;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  padding: 10px;
+  width: 270px;
+  border-radius: 5px;
+  right: 15%;
+}
+
+/*  */
+
+.label_airline {
+  position: relative;
+  cursor: pointer !important;
+}
+
+.TravellerCount {
+}
+
+.absolute {
+  position: absolute;
+}
+
+.PrefferedAirline {
+  position: absolute;
+  background: rgb(255, 255, 255);
+  left: 121px;
+  top: 24px;
+  border: 1px solid rgb(230, 230, 230);
+  border-radius: 5px;
+  height: 187px;
+  overflow-x: auto;
+  min-width: 170px;
+}
+
+.aiplineDropdown {
+  display: none;
+}
+
+.ListOfAirline {
+  padding: 10px 8px;
+  display: flex;
+  font-size: 12px;
+  align-items: center;
+}
+
+.classTypeBorder {
+  border: 1px solid #3f4fa2 !important;
+}
+
+.d-none {
+  display: none !important;
+}
+
+.selectAirline {
+  background-color: #3f4fa2 !important;
+  color: #fff;
+}

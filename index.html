@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <!-- font family -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Vanila js Css -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.4/dist/css/datepicker.min.css" /> -->
+    <!-- internal css -->
+    <link rel="stylesheet" href="./build/css/style.css" />
+    <link rel="stylesheet" href="./build/css/main.css" />
+    <link rel="stylesheet" href="./build/css/plugins/caleran.min.css" />
+    <link rel="stylesheet" href="./build/css/plugins/multiselect.min.css" />
+
+    <!-- google icons -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="searchForm">
+      <div class="searchFormBody">
+        <div class="container">
+          <div class="searchFormText">
+            <div class="searchFormTextTitle">
+              Discover your right places with us
+            </div>
+          </div>
+          <div class="searchFormTabs">
+            <button
+              class="tablink btn-tabs ripple"
+              onclick="openTab('flight_button','Flight')"
+              id="flight_button"
+            >
+              <span class="SearchFromBack">
+                <svg width="20px" height="20px" viewBox="0 0 24 24">
+                  <defs>
+                    <path
+                      id="flights-a"
+                      d="M21.272.562L15.48 6.403 2.212 2.866 0 5.097l10.936 5.809-4.423 4.46-3.438-.425-1.75 1.763 3.901 2.07 2.051 3.933 1.75-1.764-.403-3.447 4.423-4.461 5.636 10.957 2.212-2.23L17.537 8.65l5.912-5.973c1.589-1.602-.609-3.697-2.177-2.115z"
+                    ></path>
+                  </defs>
+                  <use href="#flights-a" fill-rule="evenodd"></use>
+                </svg>
+              </span>
+              <span class="SearchFormTabsName">Flight</span>
+            </button>
+            <button
+              class="tablink btn-tabs ripple"
+              onclick="openTab('hotel_button','Hotel')"
+              id="hotel_button"
+            >
+              <span class="SearchFromBack">
+                <svg width="20px" height="20px">
+                  <g fill-rule="evenodd">
+                    <path
+                      d="M17.65 16.364v-2.432H2.354v2.425H.002L0 4.73c0-1.458 2.358-1.458 2.358 0v6.791h15.256L20 11.515v4.849h-2.35zm-8.895-5.096h-4.96c-.942 0-.853-2.173.03-2.173h3.941V7.478c0-.764.471-1.195.989-1.281v-.012h.104c.056-.004.113-.004.17 0h9.67c.959 0 1.301.31 1.301 1.299v3.789H8.755v-.005zm-3.13-3.177c-1.036 0-1.875-.855-1.875-1.909s.84-1.91 1.875-1.91c1.035 0 1.875.856 1.875 1.91 0 1.054-.84 1.909-1.875 1.909z"
+                    ></path>
+                  </g>
+                </svg> </span
+              >Hotel
+            </button>
+          </div>
+        </div>
+      </div>
+      <div id="target" class="container">
+        <div class="mobileBack">
+          <div class="mobileHead">
+            <button
+              onclick="closeALLTab('Flight')"
+              class="mobileBackButton toggle"
+            >
+              <span class="material-icons"> close </span>
+            </button>
+            <div class="mobileTitle">
+              <h4 class="mobileName">Flights</h4>
+            </div>
+          </div>
+        </div>
+        <div class="searchFormWrapper">
+          <div id="Flight" class="tabcontent">
+            <div class="SearchTripType">
+              <ul class="SearchTripTypeTabs">
+                <li
+                  class="active1 TripTypeBtn"
+                  data-tab-id="tab1"
+                  onclick="ChangeTab('IRT')"
+                >
+                  Round Trip
+                </li>
+                <li
+                  class="TripTypeBtn"
+                  data-tab-id="tab2"
+                  onclick="ChangeTab('OW')"
+                >
+                  One Way
+                </li>
+                <li
+                  class="TripTypeBtn"
+                  data-tab-id="tab3"
+                  onclick="ChangeTab('NMC')"
+                >
+                  Multi City
+                </li>
+              </ul>
+              <div class="content-section">
+                <div id="tab1" class="content active1">
+                  <div class="searchFormRT CommonSearch">
+                    <div class="searchFormRTCard">
+                      <div class="searchFormRT_ToFromSearch">
+                        <div class="toFromSearchWrapper">
+                          <div class="toFromSearchOrigin search-border">
+                            <label for="OW_Origin" class="toOrigin">
+                              <div class="toOriginIcon">
+                                <span class="material-icons"> flight</span>
+                              </div>
+                              <div class="toOriginContent">
+                                <h4>From</h4>
+                                <div class="searchBox">
+                                  <input
+                                    class="dropdown airportlist Origin"
+                                    autocomplete="off"
+                                    id="IRT_Origin"
+                                    onclick="autobind(this , '0' ,null)"
+                                    onkeyup="GetAirportList(this , '0')"
+                                    type="text"
+                                    data-airport-code=""
+                                    placeholder="Origin"
+                                  />
+                                  <div
+                                    id="myDropdown"
+                                    class="dropdown-content closestDiv"
+                                  >
+                                    <div>
+                                      <div class="mobileBack">
+                                        <div class="mobileHead">
+                                          <button
+                                            class="mobileBackButton toggle"
+                                          >
+                                            <span class="material-icons">
+                                              arrow_back
+                                            </span>
+                                          </button>
+                                          <div class="mobileTitle">
+                                            <h4>Search destination</h4>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="mobileSearchInput">
+                                        <!-- <input
+                                          type="text"
+                                          autocomplete="off"
+                                          class="mobileSearch"
+                                          placeholder="Search Where Are You Flying"
+                                        /> -->
+                                        <input
+                                          class="airportlist mobileSearch"
+                                          autocomplete="off"
+                                          id="IRT_Origin"
+                                          onclick="autobind(this , '0' ,null)"
+                                          onkeyup="GetAirportList(this , '0')"
+                                          type="text"
+                                          data-airport-code=""
+                                          placeholder="Search Where Are You Flying"
+                                        />
+                                        <span class="material-icons">
+                                          search
+                                        </span>
+                                      </div>
+                                    </div>
+
+                                    <div class="toOriginPopular">
+                                      <h4>TOP ORIGINS</h4>
+                                    </div>
+                                    <ul class="dropdown-wrapper">
+                                      <!-- dynamic -->
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </label>
+                          </div>
+                          <div
+                            class="toFromSearchSweep"
+                            onclick="ExchangeValue(this)"
+                          >
+                            <span class="material-icons"> sync_alt </span>
+                          </div>
+                          <div class="toFromSearchDepart search-border">
+                            <label class="toDepart" for="flight1">
+                              <div class="toDepartIcon">
+                                <span class="material-icons"> flight</span>
+                              </div>
+                              <div class="ToDepartContent">
+                                <h4>To</h4>
+                                <div class="searchBox">
+                                  <input
+                                    class="depart"
+                                    autocomplete="off"
+                                    onclick="autobind(this , '1' ,null)"
+                                    onkeyup="GetAirportList(this , '1')"
+                                    data-airport-code=""
+                                    type="text"
+                                    id="IRT_Departure"
+                                    placeholder="Destination"
+                                  />
+                                  <div
+                                    id="departDropDown"
+                                    class="depart-content"
+                                  >
+                                    <div>
+                                      <div class="mobileBack">
+                                        <div class="mobileHead">
+                                          <button
+                                            class="mobileBackButton toggle"
+                                          >
+                                            <span class="material-icons">
+                                              arrow_back
+                                            </span>
+                                          </button>
+                                          <div class="mobileTitle">
+                                            <h4>Search destination</h4>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="mobileSearchInput">
+                                        <!-- <input
+                                          type="text"
+                                          autocomplete="off"
+                                          class="mobileSearch"
+                                        /> -->
+                                        <input
+                                          class="mobileSearch"
+                                          autocomplete="off"
+                                          onclick="autobind(this , '1' ,null)"
+                                          onkeyup="GetAirportList(this , '1')"
+                                          data-airport-code=""
+                                          type="text"
+                                          id="IRT_Departure"
+                                          placeholder="Search Where Are You Flying"
+                                        />
+                                        <span class="material-icons">
+                                          search
+                                        </span>
+                                      </div>
+                                    </div>
+                                    <div class="toDepartPopular">
+                                      <h4>TOP DESTINATIONS</h4>
+                                    </div>
+                                    <ul class="dropdown-wrapper">
+                                      <!-- dynamic -->
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="searchFormRT_ToFromDate">
+                        <div>
+                          <input
+                            type="text"
+                            autocomplete="off"
+                            class="hideInput"
+                            name="foo"
+                          />
+                        </div>
+                        <div class="searchDate" id="foo">
+                          <label for="calenderForm" class="searchDateForm">
+                            <div class="searchDateFormIcon">
+                              <span class="material-icons">event_note</span>
+                            </div>
+                            <div class="searchDateFormHead">
+                              <h4 class="searchDateFormHeadText">Departure</h4>
+                              <div>
+                                <div class="mobile">
+                                  <div class="calendar">
+                                    <div class="inputs">
+                                      <div>
+                                        <input
+                                          id="flightStart"
+                                          autocomplete="off"
+                                          type="text"
+                                          class="tawakkal"
+                                          placeholder="Start Date"
+                                          readonly
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </label>
+                          <label for="calenderTo" class="searchDateTo">
+                            <div class="searchDateHeadArrival">
+                              <h4 class="searchDateFormHeadText">Arrival</h4>
+                              <input
+                                id="flightEnd"
+                                autocomplete="off"
+                                type="text"
+                                placeholder="End Date"
+                                readonly
+                              />
+                            </div>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="TravelerClass">
+                        <div class="TravelerClassWrapper">
+                          <div
+                            onclick="ShowPaxCounter()"
+                            class="TravelerClassBox"
+                          >
+                            <div class="TravelerIcon">
+                              <span class="material-icons"> person </span>
+                            </div>
+                            <div>
+                              <h4>Passengers and Class</h4>
+                              <div class="TravelerClassCount"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="AdvancedSearchFromMobi">
+                        <!-- <div>
+                          <div class="mobileBack">
+                            <div class="mobileHead">
+                              <button class="mobileBackButton toggle">
+                                <span class="material-icons"> arrow_back </span>
+                              </button>
+                              <div class="mobileTitle">
+                                <h4>Flight</h4>
+                              </div>
+                            </div>
+                          </div>
+                        </div> -->
+                        <button
+                          class="js-expander-button expander_button"
+                          aria-pressed="false"
+                          id="AdvanceShowBtn"
+                          onclick="advancedField(this)"
+                        >
+                          <span> Advanced search options </span>
+                          <span class="material-icons expand-more"
+                            >expand_more</span
+                          >
+                          <span class="material-icons expand-less d-none">
+                            expand_less</span
+                          >
+                        </button>
+                        <div
+                          class="js-expander-more expander_more d-none"
+                          
+                        >
+                          <div class="AdvancedSearchFromSection">
+                            <div class="AdvancedSearchFromOpt">
+                              <div class="SearchFromOptCheck">
+                                <input id="DirectFlights" type="checkbox" />
+                                <label for="DirectFlights"
+                                  >Direct Flights
+                                </label>
+                              </div>
+                              <div class="SearchFromOptCheck">
+                                <input id="Refundable" type="checkbox" />
+                                <label for="Refundable">Refundable </label>
+                              </div>
+                            </div>
+                            <div class="PrefAirline-two">
+                              <label for="" class="label_airline"
+                                >Preferred Airline</label
+                              >
+
+                              <div class="multiSelect">
+                                <div
+                                  class="SearchBox inputMultiSelectBox multiInp"
+                                  onclick="showAirlineList(this)"
+                                ></div>
+                                <div class="SelectList">
+                                  <div>
+                                    <input
+                                      type="text"
+                                      autocomplete="off"
+                                      onkeyup="GetAirlineDetails(this)"
+                                    />
+                                  </div>
+                                  <ul class="ListItem"></ul>
+                                </div>
+                              </div>
+                              <!-- <select class="form-control" id="choices-multiple-remove-button" data-choices
+                              data-choices-removeItem name="choices-multiple-remove-button" multiple>
+                              <option value="Choice 1" >Choice 1</option>
+                              <option value="Choice 2">Choice 2</option>
+                              <option value="Choice 3">Choice 3</option>
+                              <option value="Choice 4">Choice 4</option>
+                            </select> -->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="searchFormButton">
+                        <button
+                          class="SearchBtn ripple"
+                          onclick="Searchflight(this)"
+                        >
+                          <span class="material-icons"> search </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="tab2" class="content">
+                  <div class="searchFormRT CommonSearch">
+                    <div class="searchFormRTCard">
+                      <div class="searchFormRT_ToFromSearch">
+                        <div class="toFromSearchWrapper">
+                          <div class="toFromSearchOrigin search-border">
+                            <label for="" class="toOrigin">
+                              <div class="toOriginIcon">
+                                <span class="material-icons"> flight</span>
+                              </div>
+                              <div class="toOriginContent">
+                                <h4>From</h4>
+                                <div class="searchBox">
+                                  <input
+                                    class="dropdown Origin"
+                                    autocomplete="off"
+                                    onclick="autobind(this , '0' ,null)"
+                                    onkeyup="GetAirportList(this , '0')"
+                                    id="OW_Origin"
+                                    data-airport-code=""
+                                    placeholder="Origin"
+                                  />
+
+                                  <div id="myDropdown" class="dropdown-content">
+                                    <div>
+                                      <div class="mobileBack">
+                                        <div class="mobileHead">
+                                          <button
+                                            class="mobileBackButton toggle" 
+                                          >
+                                            <span class="material-icons">
+                                              arrow_back
+                                            </span>
+                                          </button>
+                                          <div class="mobileTitle">
+                                            <h4>Search destination</h4>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="mobileSearchInput">
+                                        <input
+                                          type="text"
+                                          autocomplete="off"
+                                          class="mobileSearch"
+                                          placeholder="Search Where Are You Flying"
+                                        />
+                                        <span class="material-icons">
+                                          search
+                                        </span>
+                                      </div>
+                                    </div>
+
+                                    <div class="toOriginPopular">
+                                      <h4>TOP ORIGINS</h4>
+                                    </div>
+                                    <ul class="dropdown-wrapper">
+                                      <!-- <li class="dropdown-item">
+                                      <div class="autoCompleteIcon">
+                                        <svg focusable="false" color="inherit" fill="currentcolor" aria-hidden="true"
+                                          role="presentation" viewBox="0 0 150 150" preserveAspectRatio="xMidYMid meet"
+                                          width="24px" height="24px" class="sc-bxivhb dttlRz sc-jxGEyO iICATY">
+                                          <path
+                                            d="M118.9 15.7L90.7 43.9l-80.9-25c-1.6-.4-3.3 0-4.6 1.1L.7 24.5c-.9.8-.9 2.1-.2 3 .2.2.4.3.6.4l65.2 40.4-24 24c-3.8 3.7-7.2 7.8-10.2 12.2l-18.2-5c-1.6-.4-3.3.1-4.6 1.2l-3.5 3.5c-1 .8-1 2.3-.2 3.3l.4.4 18.6 13.9.6.5-.2.5c-1.8 3.7-1.2 4.3 2.5 2.5l.5-.2c.2.2.3.4.5.6l13.9 18.6c.7 1 2.2 1.3 3.2.6.1-.1.3-.2.4-.3l3.5-3.5c1.1-1.3 1.6-3 1.2-4.6l-5-18.2c4.4-3 8.5-6.4 12.2-10.2l24-24 40.1 64.7c.6 1 1.8 1.4 2.8.8.2-.1.4-.3.6-.4l4.5-4.5c1.1-1.2 1.5-3 1.1-4.6l-24.9-80.3 28.4-28.4C150 15.9 152 4.9 148.7 1.6S134.4.2 118.9 15.7z">
+                                          </path>
+                                        </svg>
+                                      </div>
+                                      <div class="ListTypeCity">
+                                        <span> Abu Dhabi </span>
+                                        <span>
+                                          Abu Dhabi International Airport
+                                        </span>
+                                      </div>
+                                      <span class="airportCode">AUH</span>
+                                    </li>
+                                    <li class="dropdown-item">
+                                      <div class="autoCompleteIcon">
+                                        <svg focusable="false" color="inherit" fill="currentcolor" aria-hidden="true"
+                                          role="presentation" viewBox="0 0 150 150" preserveAspectRatio="xMidYMid meet"
+                                          width="24px" height="24px" class="sc-bxivhb dttlRz sc-jxGEyO iICATY">
+                                          <path
+                                            d="M118.9 15.7L90.7 43.9l-80.9-25c-1.6-.4-3.3 0-4.6 1.1L.7 24.5c-.9.8-.9 2.1-.2 3 .2.2.4.3.6.4l65.2 40.4-24 24c-3.8 3.7-7.2 7.8-10.2 12.2l-18.2-5c-1.6-.4-3.3.1-4.6 1.2l-3.5 3.5c-1 .8-1 2.3-.2 3.3l.4.4 18.6 13.9.6.5-.2.5c-1.8 3.7-1.2 4.3 2.5 2.5l.5-.2c.2.2.3.4.5.6l13.9 18.6c.7 1 2.2 1.3 3.2.6.1-.1.3-.2.4-.3l3.5-3.5c1.1-1.3 1.6-3 1.2-4.6l-5-18.2c4.4-3 8.5-6.4 12.2-10.2l24-24 40.1 64.7c.6 1 1.8 1.4 2.8.8.2-.1.4-.3.6-.4l4.5-4.5c1.1-1.2 1.5-3 1.1-4.6l-24.9-80.3 28.4-28.4C150 15.9 152 4.9 148.7 1.6S134.4.2 118.9 15.7z">
+                                          </path>
+                                        </svg>
+                                      </div>
+                                      <div class="ListTypeCity">
+                                        <span> Abu Dhabi </span>
+                                        <span>
+                                          Abu Dhabi International Airport
+                                        </span>
+                                      </div>
+                                      <span class="airportCode">AUH</span>
+                                    </li>
+                                    <li class="dropdown-item">
+                                      <div class="autoCompleteIcon">
+                                        <svg focusable="false" color="inherit" fill="currentcolor" aria-hidden="true"
+                                          role="presentation" viewBox="0 0 150 150" preserveAspectRatio="xMidYMid meet"
+                                          width="24px" height="24px" class="sc-bxivhb dttlRz sc-jxGEyO iICATY">
+                                          <path
+                                            d="M118.9 15.7L90.7 43.9l-80.9-25c-1.6-.4-3.3 0-4.6 1.1L.7 24.5c-.9.8-.9 2.1-.2 3 .2.2.4.3.6.4l65.2 40.4-24 24c-3.8 3.7-7.2 7.8-10.2 12.2l-18.2-5c-1.6-.4-3.3.1-4.6 1.2l-3.5 3.5c-1 .8-1 2.3-.2 3.3l.4.4 18.6 13.9.6.5-.2.5c-1.8 3.7-1.2 4.3 2.5 2.5l.5-.2c.2.2.3.4.5.6l13.9 18.6c.7 1 2.2 1.3 3.2.6.1-.1.3-.2.4-.3l3.5-3.5c1.1-1.3 1.6-3 1.2-4.6l-5-18.2c4.4-3 8.5-6.4 12.2-10.2l24-24 40.1 64.7c.6 1 1.8 1.4 2.8.8.2-.1.4-.3.6-.4l4.5-4.5c1.1-1.2 1.5-3 1.1-4.6l-24.9-80.3 28.4-28.4C150 15.9 152 4.9 148.7 1.6S134.4.2 118.9 15.7z">
+                                          </path>
+                                        </svg>
+                                      </div>
+                                      <div class="ListTypeCity">
+                                        <span> Abu Dhabi </span>
+                                        <span>
+                                          Abu Dhabi International Airport
+                                        </span>
+                                      </div>
+                                      <span class="airportCode">AUH</span>
+                                    </li>
+                                    <li class="dropdown-item">
+                                      <div class="autoCompleteIcon">
+                                        <svg focusable="false" color="inherit" fill="currentcolor" aria-hidden="true"
+                                          role="presentation" viewBox="0 0 150 150" preserveAspectRatio="xMidYMid meet"
+                                          width="24px" height="24px" class="sc-bxivhb dttlRz sc-jxGEyO iICATY">
+                                          <path
+                                            d="M118.9 15.7L90.7 43.9l-80.9-25c-1.6-.4-3.3 0-4.6 1.1L.7 24.5c-.9.8-.9 2.1-.2 3 .2.2.4.3.6.4l65.2 40.4-24 24c-3.8 3.7-7.2 7.8-10.2 12.2l-18.2-5c-1.6-.4-3.3.1-4.6 1.2l-3.5 3.5c-1 .8-1 2.3-.2 3.3l.4.4 18.6 13.9.6.5-.2.5c-1.8 3.7-1.2 4.3 2.5 2.5l.5-.2c.2.2.3.4.5.6l13.9 18.6c.7 1 2.2 1.3 3.2.6.1-.1.3-.2.4-.3l3.5-3.5c1.1-1.3 1.6-3 1.2-4.6l-5-18.2c4.4-3 8.5-6.4 12.2-10.2l24-24 40.1 64.7c.6 1 1.8 1.4 2.8.8.2-.1.4-.3.6-.4l4.5-4.5c1.1-1.2 1.5-3 1.1-4.6l-24.9-80.3 28.4-28.4C150 15.9 152 4.9 148.7 1.6S134.4.2 118.9 15.7z">
+                                          </path>
+                                        </svg>
+                                      </div>
+                                      <div class="ListTypeCity">
+                                        <span> Abu Dhabi </span>
+                                        <span>
+                                          Abu Dhabi International Airport
+                                        </span>
+                                      </div>
+                                      <span class="airportCode">AUH</span>
+                                    </li>
+                                    <li class="dropdown-item">
+                                      <div class="autoCompleteIcon">
+                                        <svg focusable="false" color="inherit" fill="currentcolor" aria-hidden="true"
+                                          role="presentation" viewBox="0 0 150 150" preserveAspectRatio="xMidYMid meet"
+                                          width="24px" height="24px" class="sc-bxivhb dttlRz sc-jxGEyO iICATY">
+                                          <path
+                                            d="M118.9 15.7L90.7 43.9l-80.9-25c-1.6-.4-3.3 0-4.6 1.1L.7 24.5c-.9.8-.9 2.1-.2 3 .2.2.4.3.6.4l65.2 40.4-24 24c-3.8 3.7-7.2 7.8-10.2 12.2l-18.2-5c-1.6-.4-3.3.1-4.6 1.2l-3.5 3.5c-1 .8-1 2.3-.2 3.3l.4.4 18.6 13.9.6.5-.2.5c-1.8 3.7-1.2 4.3 2.5 2.5l.5-.2c.2.2.3.4.5.6l13.9 18.6c.7 1 2.2 1.3 3.2.6.1-.1.3-.2.4-.3l3.5-3.5c1.1-1.3 1.6-3 1.2-4.6l-5-18.2c4.4-3 8.5-6.4 12.2-10.2l24-24 40.1 64.7c.6 1 1.8 1.4 2.8.8.2-.1.4-.3.6-.4l4.5-4.5c1.1-1.2 1.5-3 1.1-4.6l-24.9-80.3 28.4-28.4C150 15.9 152 4.9 148.7 1.6S134.4.2 118.9 15.7z">
+                                          </path>
+                                        </svg>
+                                      </div>
+                                      <div class="ListTypeCity">
+                                        <span> Abu Dhabi </span>
+                                        <span>
+                                          Abu Dhabi International Airport
+                                        </span>
+                                      </div>
+                                      <span class="airportCode">AUH</span>
+                                    </li>
+                                    <li class="dropdown-item">
+                                      <div class="autoCompleteIcon">
+                                        <svg focusable="false" color="inherit" fill="currentcolor" aria-hidden="true"
+                                          role="presentation" viewBox="0 0 150 150" preserveAspectRatio="xMidYMid meet"
+                                          width="24px" height="24px" class="sc-bxivhb dttlRz sc-jxGEyO iICATY">
+                                          <path
+                                            d="M118.9 15.7L90.7 43.9l-80.9-25c-1.6-.4-3.3 0-4.6 1.1L.7 24.5c-.9.8-.9 2.1-.2 3 .2.2.4.3.6.4l65.2 40.4-24 24c-3.8 3.7-7.2 7.8-10.2 12.2l-18.2-5c-1.6-.4-3.3.1-4.6 1.2l-3.5 3.5c-1 .8-1 2.3-.2 3.3l.4.4 18.6 13.9.6.5-.2.5c-1.8 3.7-1.2 4.3 2.5 2.5l.5-.2c.2.2.3.4.5.6l13.9 18.6c.7 1 2.2 1.3 3.2.6.1-.1.3-.2.4-.3l3.5-3.5c1.1-1.3 1.6-3 1.2-4.6l-5-18.2c4.4-3 8.5-6.4 12.2-10.2l24-24 40.1 64.7c.6 1 1.8 1.4 2.8.8.2-.1.4-.3.6-.4l4.5-4.5c1.1-1.2 1.5-3 1.1-4.6l-24.9-80.3 28.4-28.4C150 15.9 152 4.9 148.7 1.6S134.4.2 118.9 15.7z">
+                                          </path>
+                                        </svg>
+                                      </div>
+                                      <div class="ListTypeCity">
+                                        <span> Abu Dhabi </span>
+                                        <span>
+                                          Abu Dhabi International Airport
+                                        </span>
+                                      </div>
+                                      <span class="airportCode">AUH</span>
+                                    </li> -->
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </label>
+                          </div>
+                          <div
+                            class="toFromSearchSweep"
+                            onclick="ExchangeValue(this)"
+                          >
+                            <span class="material-icons"> sync_alt </span>
+                          </div>
+                          <div class="toFromSearchDepart search-border">
+                            <label class="toDepart" for="">
+                              <div class="toDepartIcon">
+                                <span class="material-icons"> flight</span>
+                              </div>
+                              <div class="ToDepartContent">
+                                <h4>To</h4>
+                                <div class="searchBox">
+                                  <input
+                                    class="depart"
+                                    autocomplete="off"
+                                    onclick="autobind(this , '1' ,null)"
+                                    onkeyup="GetAirportList(this , '1')"
+                                    type="text"
+                                    id="OW_departure"
+                                    placeholder="Destination"
+                                    data-airport-code=""
+                                  />
+                                  <div
+                                    id="departDropDown"
+                                    class="depart-content"
+                                  >
+                                    <div>
+                                      <div class="mobileBack">
+                                        <div class="mobileHead">
+                                          <button
+                                            class="mobileBackButton toggle"
+                                          >
+                                            <span class="material-icons">
+                                              arrow_back
+                                            </span>
+                                          </button>
+                                          <div class="mobileTitle">
+                                            <h4>Search destination</h4>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="mobileSearchInput">
+                                        <input
+                                          type="text"
+                                          autocomplete="off"
+                                          class="mobileSearch"
+                                          placeholder="Search Where Are You Flying"
+                                        />
+                                        <span class="material-icons">
+                                          search
+                                        </span>
+                                      </div>
+                                    </div>
+                                    <div class="toDepartPopular">
+                                      <h4>TOP ORIGINS</h4>
+                                    </div>
+                                    <ul class="dropdown-wrapper">
+                                      <!-- dynamic -->
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="searchFormRT_ToFromDate">
+                        <div class="searchDate">
+                          <label for="calenderForm" class="searchDateForm">
+                            <div class="searchDateFormIcon">
+                              <span class="material-icons">event_note</span>
+                            </div>
+                            <div class="searchDateFormHead">
+                              <h4 class="searchDateFormHeadText">Departure</h4>
+                              <input
+                                id="OW_Calender"
+                                autocomplete="off"
+                                name="calenderForm"
+                              />
+                            </div>
+                          </label>
+                          <label for="calenderTo" class="searchDateTo">
+                            <h4
+                              class="ReturnFormHeadText"
+                              style="align-self: center"
+                            >
+                              Return Travel
+                            </h4>
+                          </label>
+                        </div>
+                      </div>
+                      <div class="TravelerClass">
+                        <div class="TravelerClassWrapper">
+                          <div
+                            onclick="ShowPaxCounter()"
+                            class="TravelerClassBox"
+                          >
+                            <div class="TravelerIcon">
+                              <span class="material-icons"> person </span>
+                            </div>
+                            <div>
+                              <h4>Passengers and Class</h4>
+                              <div class="TravelerClassCount"></div>
+                            </div>
+                          </div>
+                          <!-- Dynamic -->
+                        </div>
+                      </div>
+                      <div class="searchFormButton">
+                        <button
+                          class="SearchBtn ripple"
+                          onclick="Searchflight(this)"
+                        >
+                          <span class="material-icons"> search </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="tab3" class="content">
+                  <div class="multiCitySearch CommonSearch">
+                    <div class="multiCityCard">
+                      <div>
+                        <div id="multiCityForm">
+                          <!-- dynamic -->
+                        </div>
+                        <div
+                          class="addMoreMC"
+                          id="addMultiCityForm"
+                          onclick="bindMultiCityFrom()"
+                        >
+                          <h4>Add Another City</h4>
+                          <span class="material-icons"> add</span>
+                        </div>
+                      </div>
+
+                      <div>
+                        <div class="MCTravelerClass">
+                          <div class="TravelerClass Flex-w">
+                            <div class="TravelerClassWrapper">
+                              <div
+                                onclick="ShowPaxCounter()"
+                                class="TravelerClassBox"
+                              >
+                                <div class="TravelerIcon">
+                                  <span class="material-icons"> person </span>
+                                </div>
+                                <div>
+                                  <h4>Passengers and Class</h4>
+                                  <div class="TravelerClassCount"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="searchFormButton MCSrhBtn">
+                            <button
+                              class="SearchBtn ripple"
+                              onclick="Searchflight(this)"
+                            >
+                              <span class="material-icons"> search </span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="AdvancedSearchFrom">
+                  <button
+                    class="js-expander-button expander_button"
+                    aria-pressed="false"
+                    id="AdvanceShowBtn"
+                    onclick="advancedField(this)" onload="advancedField(this)"
+                  >
+                    <span> Advanced search options </span>
+                    <span class="material-icons expand-more">expand_more</span>
+                    <span class="material-icons expand-less d-none">
+                      expand_less</span
+                    >
+                  </button>
+                  <div
+                    class="js-expander-more expander_more d-none"
+                   
+                  >
+                    <div class="AdvancedSearchFromSection">
+                      <div class="AdvancedSearchFromOpt">
+                        <div class="SearchFromOptCheck">
+                          <input id="DirectFlights" type="checkbox" />
+                          <label for="DirectFlights">Direct Flights </label>
+                        </div>
+                        <div class="SearchFromOptCheck">
+                          <input id="Refundable" type="checkbox" />
+                          <label for="Refundable">Refundable </label>
+                        </div>
+                      </div>
+                      <div class="PrefAirline-one">
+                        <label for="" class="label_airline"
+                          >Preferred Airline</label
+                        >
+
+                        <div class="multiSelect">
+                          <div class="SearchBox inputMultiSelectBox multiInp" onclick="showAirlineList(this)"></div>
+                          <div class="SelectList">
+                            <div>
+                              <input
+                                type="text"
+                                autocomplete="off"
+                                onkeyup="GetAirlineDetails(this)"
+                              />
+                            </div>
+                            <ul class="ListItem"></ul>
+                          </div>
+                        </div>
+                        <!-- <select class="form-control" id="choices-multiple-remove-button" data-choices
+                          data-choices-removeItem name="choices-multiple-remove-button" multiple>
+                          <option value="Choice 1" >Choice 1</option>
+                          <option value="Choice 2">Choice 2</option>
+                          <option value="Choice 3">Choice 3</option>
+                          <option value="Choice 4">Choice 4</option>
+                        </select> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="Hotel" class="tabcontent">
+            <div class="HotelSearchType">
+              <div class="HotelSearchMain">
+                <div class="HotelSearchDestination">
+                  <label class="HotelSearchForm" for="FromHotel">
+                    <div class="HotelSearchFormIcon">
+                      <span class="material-icons"> location_on </span>
+                    </div>
+                    <div class="HotelSearchFormDetails">
+                      <h4>Destination</h4>
+                      <input
+                        type="text"
+                        onclick="ShowHotelList(this)"
+                        autocomplete="off"
+                        onkeyup="GethotelList(this)"
+                        autocomplete="off"
+                        id="FromHotel"
+                        data-countryCode=""
+                        data-cityCode=""
+                        data-city_Id=""
+                        class="destinationHotel"
+                        placeholder="Where are you going?"
+                      />
+                    </div>
+                  </label>
+                  <div class="hideInput HotelDestination" id="HotelDestini">
+                    <div></div>
+                    <div class="HotelSearchOtion">
+                      <div class="mobileBack">
+                        <div class="mobileHead">
+                          <button class="mobileBackButton toggle">
+                            <span class="material-icons"> arrow_back </span>
+                          </button>
+                          <div class="mobileTitle">
+                            <h4>Search destination</h4>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mobileSearchInput">
+                        <input
+                          type="text"
+                          class="mobileSearch"
+                          autocomplete="off"
+                          placeholder="Search Where Are You Flying"
+                        />
+                        <span class="material-icons"> search </span>
+                      </div>
+                      <div class="HotelList">
+                        <!-- dynamic -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="HotelSearchFormNationality">
+                  <label class="HotelSearchForm" for="FromNationality">
+                    <div class="HotelSearchFormIcon">
+                      <span class="material-icons"> class </span>
+                    </div>
+                    <div class="HotelSearchFormDetails">
+                      <h4>Nationality</h4>
+                      <input
+                        type="text"
+                        onclick="showNationality(this)"
+                        autocomplete="off"
+                        onkeyup="GetNationalityList(this)"
+                        data-countryCode=""
+                        class="NationalityInput"
+                        id="FromNationality"
+                        placeholder="Select Nationality"
+                      />
+                    </div>
+                  </label>
+
+                  <div class="hideInput HotelNationality" id="HotelNationality">
+                    <div>
+                      <div class="mobileBack">
+                        <div class="mobileHead">
+                          <button class="mobileBackButton toggle">
+                            <span class="material-icons"> arrow_back </span>
+                          </button>
+                          <div class="mobileTitle">
+                            <h4>Search destination</h4>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mobileSearchInput">
+                        <input
+                          type="text"
+                          class="mobileSearch"
+                          autocomplete="off"
+                          placeholder="Search Where Are You Flying"
+                        />
+                        <span class="material-icons"> search </span>
+                      </div>
+                    </div>
+                    <div class="HotelNationalSelectOption">
+                      <div class="mobileBack">
+                        <div class="mobileHead">
+                          <button class="mobileBackButton toggle">
+                            <span class="material-icons"> arrow_back </span>
+                          </button>
+                          <div class="mobileTitle">
+                            <h4>Search destination</h4>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mobileSearchInput">
+                        <input
+                          type="text"
+                          class="mobileSearch"
+                          autocomplete="off"
+                          placeholder="Search Where Are You Flying"
+                        />
+                        <span class="material-icons"> search </span>
+                      </div>
+                      <div class="NationalityList">
+                        <!-- dynamic -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="HotelSearchFormCalender">
+                  <div class="SearchFormCalender">
+                    <label class="HotelFormLabel" for="FromCheckIn">
+                      <div class="HotelSearchFormIcon">
+                        <span class="material-icons"> event_note </span>
+                      </div>
+                      <div class="HotelSearchFormDetails">
+                        <h4>Check In</h4>
+                        <div>
+                          <div class="mobile">
+                            <div class="calendar">
+                              <div class="inputs">
+                                <div>
+                                  <input
+                                    id="hotelStart"
+                                    type="text"
+                                    readonly
+                                    placeholder="Start Date"
+                                  />
+                                </div>
+                                <!-- <div></div> -->
+                                <!-- <div id="CalenderHideHotel" class="calenderField ">
+                                <div class="mobileBack">
+                                  <div class="mobileHead">
+                                    <button class="mobileBackButton toggle">
+                                      <span class="material-icons">
+                                        close
+                                      </span>
+                                    </button>
+                                    <div class="mobileTitle">
+                                      <h4>Date</h4>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="nextMonth" onclick="nextMonth()">
+                                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    version="1.1" width="13" height="13" viewBox="0 0 256 256" xml:space="preserve">
+                                    <defs></defs>
+                                    <g style="
+                                          stroke: none;
+                                          stroke-width: 0;
+                                          stroke-dasharray: none;
+                                          stroke-linecap: butt;
+                                          stroke-linejoin: miter;
+                                          stroke-miterlimit: 10;
+                                          fill: none;
+                                          fill-rule: nonzero;
+                                          opacity: 1;
+                                        "
+                                      transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+                                      <path
+                                        d="M 24.25 90 c -0.896 0 -1.792 -0.342 -2.475 -1.025 c -1.367 -1.366 -1.367 -3.583 0 -4.949 L 60.8 45 L 21.775 5.975 c -1.367 -1.367 -1.367 -3.583 0 -4.95 c 1.367 -1.366 3.583 -1.366 4.95 0 l 41.5 41.5 c 1.367 1.366 1.367 3.583 0 4.949 l -41.5 41.5 C 26.042 89.658 25.146 90 24.25 90 z"
+                                        style="
+                                            stroke: none;
+                                            stroke-width: 1;
+                                            stroke-dasharray: none;
+                                            stroke-linecap: butt;
+                                            stroke-linejoin: miter;
+                                            stroke-miterlimit: 10;
+                                            fill: rgb(0, 0, 0);
+                                            fill-rule: nonzero;
+                                            opacity: 1;
+                                          " transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                                    </g>
+                                  </svg>
+                                </div>
+                                <div class="preMonth" onclick="prevMonth()">
+                                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    version="1.1" width="13" height="13" viewBox="0 0 256 256" xml:space="preserve">
+                                    <defs></defs>
+                                    <g style="
+                                      stroke: none;
+                                      stroke-width: 0;
+                                      stroke-dasharray: none;
+                                      stroke-linecap: butt;
+                                      stroke-linejoin: miter;
+                                      stroke-miterlimit: 10;
+                                      fill: none;
+                                      fill-rule: nonzero;
+                                      opacity: 1;
+                                    " transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+                                      <path
+                                        d="M 24.25 90 c -0.896 0 -1.792 -0.342 -2.475 -1.025 c -1.367 -1.366 -1.367 -3.583 0 -4.949 L 60.8 45 L 21.775 5.975 c -1.367 -1.367 -1.367 -3.583 0 -4.95 c 1.367 -1.366 3.583 -1.366 4.95 0 l 41.5 41.5 c 1.367 1.366 1.367 3.583 0 4.949 l -41.5 41.5 C 26.042 89.658 25.146 90 24.25 90 z"
+                                        style="
+                                        stroke: none;
+                                        stroke-width: 1;
+                                        stroke-dasharray: none;
+                                        stroke-linecap: butt;
+                                        stroke-linejoin: miter;
+                                        stroke-miterlimit: 10;
+                                        fill: rgb(0, 0, 0);
+                                        fill-rule: nonzero;
+                                        opacity: 1;
+                                      " transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                                    </g>
+                                  </svg>
+                                </div>
+                                <div class="cal__container_hotel" id="calender_wrap"></div>
+                              </div> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </label>
+                    <div class="nightCountgBox">
+                      <div class="BgOfNights">
+                        <p class="nightNum">1</p>
+                        <p>Night</p>
+                      </div>
+                    </div>
+                    <label class="HotelFormLabel" for="FromCheckOut">
+                      <div class="HotelSearchFormDetails">
+                        <h4>Check Out</h4>
+                        <input
+                          id="hotelEnd"
+                          type="text"
+                          readonly
+                          placeholder="End Date"
+                        />
+                      </div>
+                    </label>
+                  </div>
+                </div>
+                <div class="RoomCount">
+                  <label class="HotelSearchForm label_airline" for="RoomCount">
+                    <div class="HotelSearchFormIcon">
+                      <span class="material-icons"> person </span>
+                    </div>
+                    <div class="HotelSearchFormDetails">
+                      <h4>Rooms & Guests</h4>
+
+                      <input
+                        type="text"
+                        id="RoomCount"
+                        class="roomOption"
+                        autocomplete="off"
+                        onclick="roomCount()"
+                        readonly
+                      />
+                    </div>
+                  </label>
+                  <div class="roomPaxDetails" id="roomPax">
+                    <div class="HotelPaxSelectOption">
+                      <div class="hotelPaxMobile">
+                        <div class="mobileBack">
+                          <div class="mobileHead">
+                            <button
+                              class="mobileBackButton toggle"
+                              onclick="closeALLTab('Flight')"
+                            >
+                              <span class="material-icons"> close </span>
+                            </button>
+                            <div class="mobileTitle">
+                              <h4>Flights</h4>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="HotelSearchOtionContent"
+                        onclick="apply_people(this)"
+                        data-room="1Room1Adult"
+                      >
+                        <a> 1 Room, 1 Adult, 0 Child</a>
+                      </div>
+                      <div
+                        class="HotelSearchOtionContent"
+                        onclick="apply_people(this)"
+                        data-room="1Room2Adult"
+                      >
+                        <a> 1 Room, 2 Adult, 0 Child</a>
+                      </div>
+                      <div
+                        class="HotelSearchOtionContent"
+                        onclick="apply_people(this)"
+                        data-room="addmore"
+                      >
+                        <a> More Option</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="hotelSrhbtn">
+                  <div class="searchFormButton">
+                    <button
+                      class="SearchBtn ripple hotelBtn"
+                      onclick="searchHotel()"
+                    >
+                      <span class="material-icons"> search </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="moreOptionWrapper" id="MoreOption">
+                <div class="roomPaxWrap">
+                  <div class="Grid5AdjCol">
+                    <div class="HotelTravelerTypeAdult">
+                      <h4>Adult (12+ years)</h4>
+                    </div>
+                    <div class="HotelTravelerTypeChild">
+                      <h4>Child (0 to 11 years)</h4>
+                    </div>
+                    <div class="HotelNoageChild">
+                      <div class="HotelNoageChildContent Child-one d-none">
+                        <h4 class="HotelNoageChildPara">Child 1</h4>
+                      </div>
+                      <div class="HotelNoageChildContent Child-two d-none">
+                        <h4 class="HotelNoageChildPara">Child 2</h4>
+                      </div>
+                      <div class="HotelNoageChildContent Child-three d-none">
+                        <h4 class="HotelNoageChildPara">Child 3</h4>
+                      </div>
+                      <div class="HotelNoageChildContent Child-four d-none">
+                        <h4 class="HotelNoageChildPara">Child 4</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- dynamic -->
+                  <div class="addMoreTravller" onclick="addmore_rooms()">
+                    <h5>
+                      <span class="material-icons"> add </span>
+                      <span> Add Another Room </span>
+                    </h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--  pax counter -->
+
+    <div class="travel-content TravelDropdown" id="TravellerCount">
+      <div class="mobileBack">
+        <div class="mobileHead">
+          <button class="mobileBackButton toggle" onclick="ApplyTraveller()">
+            <span class="material-icons"> arrow_back </span>
+          </button>
+          <div class="mobileTitle">
+            <h4>Passengers and Class</h4>
+          </div>
+        </div>
+      </div>
+      <div class="SelectTravelerCount">
+        <div class="TravelerCountClass">
+          <h4>Travel Class</h4>
+          <div class="travelerBtnGrp">
+            <button
+              onclick="ClassType(this , 'Economy')"
+              class="classBtn EconomyClass classTypeBorder"
+            >
+              <span>Economy</span>
+              <span class="material-icons"> done </span>
+              <span class="travelerCircal"> </span>
+            </button>
+            <button
+              onclick="ClassType(this , 'PremiumEconomy')"
+              class="classBtn"
+            >
+              <span>Premium Economy</span>
+              <span class="material-icons"> done </span>
+
+              <span class="travelerCircal"> </span>
+            </button>
+            <button
+              onclick="ClassType(this , 'BusinessClass')"
+              class="classBtn"
+            >
+              <span>Business Class</span>
+              <span class="material-icons"> done </span>
+
+              <span class="travelerCircal"> </span>
+            </button>
+            <button onclick="ClassType(this , 'FirstClass')" class="classBtn">
+              <span>First Class</span>
+              <span class="material-icons"> done </span>
+
+              <span class="travelerCircal"></span>
+            </button>
+          </div>
+        </div>
+        <div class="TravelerCountNumber">
+          <h4>Number of Travellers</h4>
+          <div class="AddTravelerCount">
+            <p class="TravelerType">Adult (12+ years)</p>
+            <div class="TravelerSteps">
+              <button
+                onclick="PaxCount('adult' , 'remove')"
+                class="adult_minus_btn"
+              >
+                <span class="material-icons"> remove </span>
+              </button>
+              <input
+                type="text"
+                id="adult"
+                readonly="true"
+                autocomplete="off"
+                value="1"
+              />
+              <button
+                onclick="PaxCount('adult' , 'add')"
+                class="adult_plus_btn"
+              >
+                <span class="material-icons"> add </span>
+              </button>
+            </div>
+          </div>
+          <div class="AddTravelerCount">
+            <p class="TravelerType">Child (2 -11 years)</p>
+            <div class="TravelerSteps">
+              <button
+                onclick="PaxCount('child' , 'remove')"
+                class="child_minus_btn"
+              >
+                <span class="material-icons"> remove </span>
+              </button>
+              <input
+                type="text"
+                id="child"
+                readonly="true"
+                autocomplete="off"
+                value="0"
+              />
+              <button
+                onclick="PaxCount('child' , 'add')"
+                class="child_plus_btn"
+              >
+                <span class="material-icons"> add </span>
+              </button>
+            </div>
+          </div>
+          <div class="AddTravelerCount">
+            <p class="TravelerType">Infant (Under 2 years)</p>
+            <div class="TravelerSteps">
+              <button
+                onclick="PaxCount('infant' , 'remove' )"
+                class="infant_minus_btn"
+              >
+                <span class="material-icons"> remove </span>
+              </button>
+              <input
+                type="text"
+                id="infant"
+                readonly="true"
+                autocomplete="off"
+                value="0"
+              />
+              <button
+                onclick="PaxCount('infant' , 'add')"
+                class="infant_plus_btn"
+              >
+                <span class="material-icons"> add </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="TravelerCountClassFooter">
+        <button onclick="resetAllPaxCounter()">Reset</button>
+        <button onclick="ApplyTraveller()">Apply</button>
+      </div>
+    </div>
+    <!--  toaster  -->
+
+    <!-- success -->
+    <!-- <div class="toaster-card toast-success">
+    <img
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADsSURBVEhLY2AYBfQMgf///3P8+/evAIgvA/FsIF+BavYDDWMBGroaSMMBiE8VC7AZDrIFaMFnii3AZTjUgsUUWUDA8OdAH6iQbQEhw4HyGsPEcKBXBIC4ARhex4G4BsjmweU1soIFaGg/WtoFZRIZdEvIMhxkCCjXIVsATV6gFGACs4Rsw0EGgIIH3QJYJgHSARQZDrWAB+jawzgs+Q2UO49D7jnRSRGoEFRILcdmEMWGI0cm0JJ2QpYA1RDvcmzJEWhABhD/pqrL0S0CWuABKgnRki9lLseS7g2AlqwHWQSKH4oKLrILpRGhEQCw2LiRUIa4lwAAAABJRU5ErkJggg=="
+      alt="">
+    <span>Hello. I'm an success</span>
+  </div> -->
+
+    <!-- error -->
+    <!-- <div class="toaster-card toast-error">
+    <img
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHOSURBVEhLrZa/SgNBEMZzh0WKCClSCKaIYOED+AAKeQQLG8HWztLCImBrYadgIdY+gIKNYkBFSwu7CAoqCgkkoGBI/E28PdbLZmeDLgzZzcx83/zZ2SSXC1j9fr+I1Hq93g2yxH4iwM1vkoBWAdxCmpzTxfkN2RcyZNaHFIkSo10+8kgxkXIURV5HGxTmFuc75B2RfQkpxHG8aAgaAFa0tAHqYFfQ7Iwe2yhODk8+J4C7yAoRTWI3w/4klGRgR4lO7Rpn9+gvMyWp+uxFh8+H+ARlgN1nJuJuQAYvNkEnwGFck18Er4q3egEc/oO+mhLdKgRyhdNFiacC0rlOCbhNVz4H9FnAYgDBvU3QIioZlJFLJtsoHYRDfiZoUyIxqCtRpVlANq0EU4dApjrtgezPFad5S19Wgjkc0hNVnuF4HjVA6C7QrSIbylB+oZe3aHgBsqlNqKYH48jXyJKMuAbiyVJ8KzaB3eRc0pg9VwQ4niFryI68qiOi3AbjwdsfnAtk0bCjTLJKr6mrD9g8iq/S/B81hguOMlQTnVyG40wAcjnmgsCNESDrjme7wfftP4P7SP4N3CJZdvzoNyGq2c/HWOXJGsvVg+RA/k2MC/wN6I2YA2Pt8GkAAAAASUVORK5CYII="
+      alt="">
+    <span>Hello. I'm an error</span>
+  </div> -->
+
+    <!-- warning -->
+    <div class="toaster-card toast-warning d-none">
+      <img
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGYSURBVEhL5ZSvTsNQFMbXZGICMYGYmJhAQIJAICYQPAACiSDB8AiICQQJT4CqQEwgJvYASAQCiZiYmJhAIBATCARJy+9rTsldd8sKu1M0+dLb057v6/lbq/2rK0mS/TRNj9cWNAKPYIJII7gIxCcQ51cvqID+GIEX8ASG4B1bK5gIZFeQfoJdEXOfgX4QAQg7kH2A65yQ87lyxb27sggkAzAuFhbbg1K2kgCkB1bVwyIR9m2L7PRPIhDUIXgGtyKw575yz3lTNs6X4JXnjV+LKM/m3MydnTbtOKIjtz6VhCBq4vSm3ncdrD2lk0VgUXSVKjVDJXJzijW1RQdsU7F77He8u68koNZTz8Oz5yGa6J3H3lZ0xYgXBK2QymlWWA+RWnYhskLBv2vmE+hBMCtbA7KX5drWyRT/2JsqZ2IvfB9Y4bWDNMFbJRFmC9E74SoS0CqulwjkC0+5bpcV1CZ8NMej4pjy0U+doDQsGyo1hzVJttIjhQ7GnBtRFN1UarUlH8F3xict+HY07rEzoUGPlWcjRFRr4/gChZgc3ZL2d8oAAAAASUVORK5CYII="
+        alt=""
+      />
+      <span></span>
+    </div>
+
+    <script src="./build/js/plugins/moment.min.js"></script>
+    <script src="./build/js/plugins/caleran.min.js"></script>
+    <script src="./build/js/flight/flight.js"></script>
+    <script src="./build/js/hotel/hotel.js"></script>
+    <script src="./build/js/common.js"></script>
+  </body>
+</html>
