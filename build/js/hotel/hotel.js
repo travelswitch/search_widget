@@ -1,12 +1,22 @@
+    
 /**
- * @file Hotel search and booking functionality.
- * @author Abdul Razzak
- * @description This file contains all the JavaScript code for handling the hotel search widget,
- * including room and passenger selection, destination and nationality search, date selection,
- * and constructing the final search query.
+ * Hotel Search and Booking Module
+ * ------------------------------
+ * This module manages the hotel search widget, including room and passenger selection,
+ * destination and nationality search, date selection, and constructing the final search query.
+ *
+ * Author: Abdul Razzak
+ * Last Modified: [Update Date]
+ *
+ * Features:
+ * - Room and passenger (pax) selection with dynamic UI
+ * - Hotel destination and nationality autocomplete
+ * - Date picker integration and night calculation
+ * - Search query construction and validation
+ * - Utility functions for UI and data handling
  */
 
-// ---=== Room and Pax Selection ===--- //
+// ---=== Room and Passenger Selection ===--- //
 
 /**
  * Toggles the visibility of the room and passenger selection dropdown.
@@ -18,13 +28,13 @@ function roomCount() {
 /**
  * Adds a new room interface to the DOM, up to a maximum of 6 rooms.
  */
-function addmore_rooms() {
+function addMoreRooms() {
     const rooms = document.querySelectorAll(".HotelNoRoomWrapper");
     const MAX_ROOMS = 6;
 
     if (rooms.length < MAX_ROOMS) {
         const removeButtonHtml = `
-            <div class="closeRoomCard" onclick="RemoveRoom(this)">
+            <div class="closeRoomCard" onclick="removeRoom(this)">
                 <span class="material-icons">close</span>
             </div>`;
 
@@ -36,22 +46,22 @@ function addmore_rooms() {
                 </div>
                 <div class="HotelNoRoomCount AdultPax">
                     <div class="HotelTravelerSteps">
-                        <button class="opacity" onclick="AddAdultPax(this, false)">
+                        <button class="opacity" onclick="addAdultPax(this, false)">
                             <span class="material-icons">remove</span>
                         </button>
                         <input type="text" value="1" autocomplete="off" readonly />
-                        <button onclick="AddAdultPax(this, true)">
+                        <button onclick="addAdultPax(this, true)">
                             <span class="material-icons">add</span>
                         </button>
                     </div>
                 </div>
                 <div class="HotelNoRoomCount ChildPax">
                     <div class="HotelTravelerSteps">
-                        <button class="opacity" onclick="AddChildPax(this, false)">
+                        <button class="opacity" onclick="addChildPax(this, false)">
                             <span class="material-icons">remove</span>
                         </button>
                         <input type="text" value="0" autocomplete="off" readonly />
-                        <button onclick="AddChildPax(this, true)">
+                        <button onclick="addChildPax(this, true)">
                             <span class="material-icons">add</span>
                         </button>
                     </div>
@@ -69,17 +79,17 @@ function addmore_rooms() {
         document.getElementById('MoreOption').querySelector('.addMoreTravller').classList.add("HotelPaxSelectOption");
     }
 
-    TravellerCounter('');
+    travellerCounter('');
 }
 
 // Initialize with one room by default
-addmore_rooms();
+addMoreRooms();
 
 /**
  * Removes a room from the DOM and re-indexes the remaining rooms.
  * @param {HTMLElement} elem - The close button element that was clicked.
  */
-function RemoveRoom(elem) {
+function removeRoom(elem) {
     elem.closest(".HotelNoRoomWrapper").remove();
     const allRooms = document.querySelectorAll(".HotelNoRoomWrapper");
 
@@ -87,7 +97,7 @@ function RemoveRoom(elem) {
         room.querySelector('.Rooms_no').innerHTML = `Room ${index + 1}`;
     });
 
-    TravellerCounter('');
+    travellerCounter('');
     // Re-enable the 'add more' button as we are now below the limit
     document.getElementById('MoreOption').querySelector('.addMoreTravller').classList.remove("HotelPaxSelectOption");
 }
@@ -97,7 +107,7 @@ function RemoveRoom(elem) {
  * @param {HTMLElement} elem - The button element (+ or -) that was clicked.
  * @param {boolean} isIncrement - True to add a child, false to remove.
  */
-function AddChildPax(elem, isIncrement) {
+function addChildPax(elem, isIncrement) {
     const input = isIncrement ? elem.previousElementSibling : elem.nextElementSibling;
     const currentValue = parseInt(input.value, 10);
     const MAX_CHILDREN = 4;
@@ -105,10 +115,10 @@ function AddChildPax(elem, isIncrement) {
 
     if (isIncrement && currentValue < MAX_CHILDREN) {
         input.value = currentValue + 1;
-        children_number(elem, true, input.value);
+        childrenNumber(elem, true, input.value);
     } else if (!isIncrement && currentValue > MIN_CHILDREN) {
         input.value = currentValue - 1;
-        children_number(elem, false, input.value);
+        childrenNumber(elem, false, input.value);
     }
 
     // Update button states (disabled/enabled)
@@ -118,8 +128,7 @@ function AddChildPax(elem, isIncrement) {
     elem.closest('.HotelTravelerSteps').querySelector('button:first-child').style.opacity = currentVal === MIN_CHILDREN ? '0.6' : '1';
     elem.closest('.HotelTravelerSteps').querySelector('button:last-child').style.opacity = currentVal === MAX_CHILDREN ? '0.6' : '1';
 
-
-    TravellerCounter('');
+    travellerCounter('');
 }
 
 /**
@@ -127,7 +136,7 @@ function AddChildPax(elem, isIncrement) {
  * @param {HTMLElement} elem - The button element (+ or -) that was clicked.
  * @param {boolean} isIncrement - True to add an adult, false to remove.
  */
-function AddAdultPax(elem, isIncrement) {
+function addAdultPax(elem, isIncrement) {
     const input = isIncrement ? elem.previousElementSibling : elem.nextElementSibling;
     const currentValue = parseInt(input.value, 10);
     const MAX_ADULTS = 6;
@@ -146,17 +155,17 @@ function AddAdultPax(elem, isIncrement) {
     elem.closest('.HotelTravelerSteps').querySelector('button:first-child').style.opacity = currentVal === MIN_ADULTS ? '0.6' : '1';
     elem.closest('.HotelTravelerSteps').querySelector('button:last-child').style.opacity = currentVal === MAX_ADULTS ? '0.6' : '1';
 
-    TravellerCounter('');
+    travellerCounter('');
 }
 
 /**
  * Applies the selected passenger and room configuration and closes the dropdown.
  * @param {HTMLElement} elem - The "Apply" button element.
  */
-function apply_people(elem) {
+function applyPeople(elem) {
     if (elem) {
         const roomType = elem.getAttribute('data-room');
-        TravellerCounter(roomType);
+        travellerCounter(roomType);
         document.getElementById("roomPax").classList.remove("showRoomPax");
 
         // Toggle visibility of the detailed room selection vs single-line options
@@ -168,12 +177,12 @@ function apply_people(elem) {
     }
 }
 
-var RoomDetails = [];
+var roomDetails = [];
 /**
  * Gathers room, adult, and child data from the DOM and updates the summary.
  * @param {string} optionType - A preset option like "1Room2Adult" or "1Room1Adult", or empty for custom.
  */
-function TravellerCounter(optionType) {
+function travellerCounter(optionType) {
     let searchRooms = [];
     
     const presets = {
@@ -199,12 +208,12 @@ function TravellerCounter(optionType) {
         searchRooms = [...roomData];
     }
 
-    RoomDetails = searchRooms;
+    roomDetails = searchRooms;
     getRoomsInfo(searchRooms);
 }
 
 // Initialize with default: 1 Room, 2 Adults
-TravellerCounter('1Room2Adult');
+travellerCounter('1Room2Adult');
 
 /**
  * Calculates total rooms, adults, and children and updates the display input.
@@ -226,12 +235,12 @@ function getRoomsInfo(rooms) {
  * @param {boolean} isAdd - True to add a dropdown, false to remove the last one.
  * @param {number} index - The current number of children, used for class naming.
  */
-function children_number(elem, isAdd, index) {
+function childrenNumber(elem, isAdd, index) {
     const ageContainer = elem.closest(".HotelNoRoomWrapper").querySelector(".HotelNoageChild");
     if (isAdd) {
         const childAgeHtml = `
             <div class="HotelNoageSelect child_${index}">
-                <select class="select_control" onchange="TravellerCounter('')">
+                <select class="select_control" onchange="travellerCounter('')">
                     <option value="1">Under 1</option>
                     ${Array.from({ length: 11 }, (_, i) => `<option value="${i + 2}">${i + 2}</option>`).join('')}
                 </select>
@@ -243,27 +252,28 @@ function children_number(elem, isAdd, index) {
             lastChild.remove();
         }
     }
-    TravellerCounter('');
+    travellerCounter('');
 }
 
 
 // ---=== Hotel Destination Search ===--- //
 
-let HotelList = [];
-let NationalityList = [];
+let hotelList = [];
+let nationalityList = [];
 
 /**
  * Fetches a default list of popular cities on page load.
  */
 async function getBindHotelList() {
-    const url = `${config.adminApiUrl}/CityMaster/GetSelectedCity?cityCode=39942,12568,41325,38997,33324&LangCode=EN`;
+    let topCityCodeList = ['540025', '607049', '212101', '211918', '322239'];
+    const url = `${config.adminApiUrl}/CityMaster/GetSelectedCity?cityCode=${topCityCodeList.join(',')}&LangCode=EN`;
     const headers = { 'Content-Type': 'application/json', 'OrgId': '2206040706597097092' };
     try {
         const request = new Request(url, { method: 'GET', headers });
-        const newRequest = UtilService.headerSetup(request);
+        const newRequest = utilService.headerSetup(request);
         const response = await fetch(newRequest);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        HotelList = await response.json();
+        hotelList = await response.json();
     } catch (error) {
         console.error("Failed to fetch initial hotel list:", error);
     }
@@ -274,16 +284,16 @@ getBindHotelList(); // Fetch on initial load
  * Fetches hotel locations based on user input (autocomplete).
  * @param {HTMLInputElement} input - The input element for the hotel destination.
  */
-async function GethotelList(input) {
+async function getHotelList(input) {
     if (input.value.length < 2) return;
     const url = `${config.hotelApiUrl}/hotel/location?searchKey=${input.value}&langCode=EN`;
     const headers = { 'Content-Type': 'application/json', 'OrgId': '2206040706597097092' };
     try {
         const request = new Request(url, { method: 'GET', headers });
-        const newRequest = UtilService.headerSetup(request);
+        const newRequest = utilService.headerSetup(request);
         const response = await fetch(newRequest);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        HotelList = await response.json();
+        hotelList = await response.json();
         autoHotelListbind(input);
     } catch (error) {
         console.error("Failed to fetch hotel list for autocomplete:", error);
@@ -294,7 +304,7 @@ async function GethotelList(input) {
  * Shows the hotel search results dropdown.
  * @param {HTMLElement} element - The input element that was focused or typed in.
  */
-function ShowHotelList(element) {
+function showHotelList(element) {
     const searchContainer = element.closest(".HotelSearchDestination");
     const resultsList = searchContainer.querySelector(".hideInput");
     if (resultsList) {
@@ -309,9 +319,9 @@ function ShowHotelList(element) {
  */
 function autoHotelListbind(element) {
     let html = '';
-    HotelList.forEach(e => {
+    hotelList.forEach(e => {
         html += `
-           <div class="HotelSearchOtionContent" onclick="ApplyHotelCity(this)">
+           <div class="HotelSearchOtionContent" onclick="applyHotelCity(this)">
              <span class="material-icons">location_on</span>
              <a data-countryCode="${e.countryCode}" data-cityCode="${e.cityCode}" data-city_Id="${e.city_Id}" data-cityName="${e.cityName}" data-displayName="${e.displayName}">${e.displayName}</a>
            </div>`;
@@ -323,7 +333,7 @@ function autoHotelListbind(element) {
  * Applies the selected hotel/city to the input field and hides the dropdown.
  * @param {HTMLElement} elem - The selected city element from the list.
  */
-function ApplyHotelCity(elem) {
+function applyHotelCity(elem) {
     const anchor = elem.querySelector('a');
     const { countrycode, citycode, city_id, displayname } = anchor.dataset;
 
@@ -345,7 +355,7 @@ function ApplyHotelCity(elem) {
  */
 function showNationality(elem) {
     elem.closest('.HotelSearchFormNationality').querySelector('.HotelNationality').classList.remove('hideInput');
-    autonationalityListbind(elem);
+    autoNationalityListbind(elem);
 }
 
 /**
@@ -356,10 +366,10 @@ async function getBindNationalityList() {
     const headers = { 'Content-Type': 'application/json', 'OrgId': '2206040706597097092' };
     try {
         const request = new Request(url, { method: 'GET', headers });
-        const newRequest = UtilService.headerSetup(request);
+        const newRequest = utilService.headerSetup(request);
         const response = await fetch(newRequest);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        NationalityList = await response.json();
+        nationalityList = await response.json();
     } catch (error) {
         console.error("Failed to fetch initial nationality list:", error);
     }
@@ -370,17 +380,17 @@ getBindNationalityList(); // Fetch on initial load
  * Fetches nationalities based on user input (autocomplete).
  * @param {HTMLInputElement} Input - The input element for nationality.
  */
-async function GetNationalityList(Input) {
+async function getNationalityList(Input) {
     if (!Input.value) return;
     const url = `${config.adminApiUrl}/MasterSearch/GetAllCountry/EN/${Input.value}`;
     const headers = { 'Content-Type': 'application/json', 'OrgId': '2206040706597097092' };
     try {
         const request = new Request(url, { method: 'GET', headers });
-        const newRequest = UtilService.headerSetup(request);
+        const newRequest = utilService.headerSetup(request);
         const response = await fetch(newRequest);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        NationalityList = await response.json();
-        autonationalityListbind(Input);
+        nationalityList = await response.json();
+        autoNationalityListbind(Input);
     } catch (error) {
         console.error("Failed to fetch nationality list for autocomplete:", error);
     }
@@ -390,11 +400,11 @@ async function GetNationalityList(Input) {
  * Renders the fetched nationality list into the dropdown.
  * @param {HTMLElement} elem - The input element to anchor the dropdown to.
  */
-function autonationalityListbind(elem) {
+function autoNationalityListbind(elem) {
     let html = '';
-    NationalityList.forEach(e => {
+    nationalityList.forEach(e => {
         html += `
-           <div class="HotelSearchOtionContent" onclick="ApplyNationality(this)">
+           <div class="HotelSearchOtionContent" onclick="applyNationality(this)">
              <span class="material-icons">location_on</span>
              <a data-countryCode="${e.country_code}" data-countryName="${e.country_name}">${e.country_name}</a>
            </div>`;
@@ -406,7 +416,7 @@ function autonationalityListbind(elem) {
  * Applies the selected nationality to the input field and hides the dropdown.
  * @param {HTMLElement} elem - The selected nationality element from the list.
  */
-function ApplyNationality(elem) {
+function applyNationality(elem) {
     const anchor = elem.querySelector('a');
     const { countrycode, countryname } = anchor.dataset;
     const input = document.getElementById('FromNationality');
@@ -570,7 +580,7 @@ function searchHotel() {
         checkoutDate: moment(document.getElementById('hotelEnd').value).format('DD-MMM-YYYY')
     };
 
-    RoomDetails.forEach((room, i) => {
+    roomDetails.forEach((room, i) => {
         const roomInfo = [
             parseInt(room.adult, 10),
             parseInt(room.child, 10),
@@ -581,5 +591,5 @@ function searchHotel() {
 
     const queryString = new URLSearchParams(queryParams).toString();
     // Redirect to results page
-    window.location.href = `https://travel.neuholidays.com/hotel/result?${queryString}`;
+    window.location.href = `${config.domain}/hotel/result?${queryString}`;
 }

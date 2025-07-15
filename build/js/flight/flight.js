@@ -1,31 +1,41 @@
-/**
- * @author Abdul Razzak
- * @description This file manages the flight search functionality, including airport lookups,
- * passenger counting, trip type selection (One-Way, Round-Trip, Multi-City),
- * date handling, and building the final search query.
+/*
+ * Flight Search Functionality Module
+ * ----------------------------------
+ * This module manages the flight search form, including airport and airline lookup, passenger and class selection, trip type (one-way, round-trip, multi-city), date handling, and query building for search redirection. It provides all UI logic and data handling for the flight search experience.
+ *
+ * Author: Abdul Razzak
+ * Last Modified: [Update Date]
+ *
+ * This file contains all the logic for the flight search form, including:
+ * - Airport and airline autocomplete
+ * - Passenger and class selection
+ * - Trip type (one-way, round-trip, multi-city) management
+ * - Date pickers and validation
+ * - Query building and redirection to the search results page
+ * - Utility and helper functions
  */
 
 // ===================================================================================
 // GLOBAL VARIABLES & INITIAL SETUP
 // ===================================================================================
 
-let airportlist = []; // Holds the list of airports fetched from the API.
+let airportList = []; // Holds the list of airports fetched from the API.
 
 // Stores details about the travellers and class type.
-let TravellerDetails = {
+let travellerDetails = {
     classType: 'Economy',
-    Adult: 1,
+    adult: 1,
     child: 0,
-    Infant: 0,
+    infant: 0,
 };
 
-let advancedSerch = true; // Toggles the advanced search section visibility.
+let advancedSearch = true; // Toggles the advanced search section visibility.
 
 // Initial setup calls when the script loads.
-PaxCount('', ''); // Initialize passenger count display.
-bindMultiCityFrom(); // Add the first multi-city form.
-bindMultiCityFrom(); // Add the second multi-city form for default view.
-GetAirportList(undefined, null); // Pre-fetch airport list for faster initial search.
+paxCount('', ''); // Initialize passenger count display.
+bindMultiCityForm(); // Add the first multi-city form.
+bindMultiCityForm(); // Add the second multi-city form for default view.
+getAirportList(undefined, null); // Pre-fetch airport list for faster initial search.
 
 // ===================================================================================
 // AIRPORT SEARCH & AUTOCOMPLETE
@@ -36,7 +46,7 @@ GetAirportList(undefined, null); // Pre-fetch airport list for faster initial se
  * @param {HTMLElement} element - The input element that triggered the function.
  * @param {string|null} check - A flag to determine which input field is being used.
  */
-async function GetAirportList(element, check) {
+async function getAirportList(element, check) {
     // Use 'BOM' as default search value if input is empty.
     let inpVal = check ? (element.value ? element.value : 'BOM') : 'BOM';
     if (inpVal.length >= 3) {
@@ -45,14 +55,14 @@ async function GetAirportList(element, check) {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', 'OrgId': '2206040706597097092' }
             });
-            const newRequest = UtilService.headerSetup(request);
+            const newRequest = utilService.headerSetup(request);
             const response = await fetch(newRequest);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
-            airportlist = data; // Store the fetched list globally.
-            autobind(element, check, airportlist); // Bind the list to the dropdown.
+            airportList = data; // Store the fetched list globally.
+            autoBind(element, check, airportList); // Bind the list to the dropdown.
         } catch (error) {
             console.error("Failed to fetch airport list:", error);
         }
@@ -65,7 +75,7 @@ async function GetAirportList(element, check) {
  * @param {string} check - Flag to differentiate between 'From' ('0') and 'To' ('1') fields.
  * @param {Array} obj - The list of airports to display.
  */
-function autobind(element, check, obj) {
+function autoBind(element, check, obj) {
     if (element) {
         // Show the appropriate dropdown.
         const dropdownClass = check === '0' ? 'show' : 'showdepart';
@@ -74,9 +84,9 @@ function autobind(element, check, obj) {
     }
 
     let html = '';
-    let airlist = obj || airportlist;
-    airlist.map(e => {
-        html += ` <li class="dropdown-item" onclick="ApplyAirport(this)" data-city-name="${e.ct}" data-airport-name="${e.an}" data-airport-code="${e.ac}" data-country-code="${e.cc}">
+    let airList = obj || airportList;
+    airList.map(e => {
+        html += ` <li class="dropdown-item" onclick="applyAirport(this)" data-city-name="${e.ct}" data-airport-name="${e.an}" data-airport-code="${e.ac}" data-country-code="${e.cc}">
                       <div class="autoCompleteIcon">
                         <svg focusable="false" color="inherit" fill="currentcolor" aria-hidden="true" role="presentation" viewBox="0 0 150 150" preserveAspectRatio="xMidYMid meet" width="24px" height="24px" class="sc-bxivhb dttlRz sc-jxGEyO iICATY">
                           <path d="M118.9 15.7L90.7 43.9l-80.9-25c-1.6-.4-3.3 0-4.6 1.1L.7 24.5c-.9.8-.9 2.1-.2 3 .2.2.4.3.6.4l65.2 40.4-24 24c-3.8 3.7-7.2 7.8-10.2 12.2l-18.2-5c-1.6-.4-3.3.1-4.6 1.2l-3.5 3.5c-1 .8-1 2.3-.2 3.3l.4.4 18.6 13.9.6.5-.2.5c-1.8 3.7-1.2 4.3 2.5 2.5l.5-.2c.2.2.3.4.5.6l13.9 18.6c.7 1 2.2 1.3 3.2.6.1-.1.3-.2.4-.3l3.5-3.5c1.1-1.3 1.6-3 1.2-4.6l-5-18.2c4.4-3 8.5-6.4 12.2-10.2l24-24 40.1 64.7c.6 1 1.8 1.4 2.8.8.2-.1.4-.3.6-.4l4.5-4.5c1.1-1.2 1.5-3 1.1-4.6l-24.9-80.3 28.4-28.4C150 15.9 152 4.9 148.7 1.6S134.4.2 118.9 15.7z"></path>
@@ -96,44 +106,78 @@ function autobind(element, check, obj) {
 }
 
 /**
+ * Swaps the values of the Origin and Destination fields.
+ * @param {HTMLElement} elmnt - The swap icon element.
+ */
+function closeFormDropDown() {
+    setTimeout(() => {
+        const fromDropDown = document.getElementsByClassName("dropdown-content");
+        for (let i = 0; i < fromDropDown.length; i++) {
+            const openDropdown = fromDropDown[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+        const toDropDown = document.getElementsByClassName("depart-content");
+        for (let i = 0; i < toDropDown.length; i++) {
+            const openDropdown = toDropDown[i];
+            if (openDropdown.classList.contains('showdepart')) {
+                openDropdown.classList.remove('showdepart');
+            }
+        }
+    }, 50);
+    // const dropdownContent = document.querySelector(".dropdown-content");
+    // if (dropdownContent.classList.contains('showdepart')) {
+    //     dropdownContent.classList.remove('showdepart');
+    // }
+}
+
+/**
  * Applies the selected airport details to the input field.
  * @param {HTMLElement} element - The selected 'li' element from the dropdown.
  */
-function ApplyAirport(element) {
-    let city_name = element.getAttribute("data-city-name");
+function applyAirport(element) {
+
+    let cityName = element.getAttribute("data-city-name");
     let code = element.getAttribute("data-airport-code");
     let inputField = element.closest(".search-border").querySelector('input');
 
-    inputField.value = city_name;
+    inputField.value = cityName;
     inputField.setAttribute("data-airport-code", code);
 
     // If in multi-city and not the destination field, auto-fill the next origin.
     if (!inputField.classList.contains('Origin')) {
-        let nextform = element.closest('.MultiForm')?.nextElementSibling;
-        if (nextform?.querySelector('.Origin')) {
-            nextform.querySelector('.Origin').value = city_name;
-            nextform.querySelector('.Origin').setAttribute("data-airport-code", code);
+        let nextForm = element.closest('.MultiForm')?.nextElementSibling;
+        if (nextForm?.querySelector('.Origin')) {
+            nextForm.querySelector('.Origin').value = cityName;
+            nextForm.querySelector('.Origin').setAttribute("data-airport-code", code);
         }
     }
+
+    closeFormDropDown()
 }
+
+
+
+
 
 /**
  * Swaps the values of the Origin and Destination fields.
  * @param {HTMLElement} elmnt - The swap icon element.
  */
-function ExchangeValue(elmnt) {
+function exchangeValue(elmnt) {
     let element = elmnt.closest('.toFromSearchWrapper');
-    let From = element.querySelector('.Origin');
-    let To = element.querySelector('.depart');
+    let from = element.querySelector('.Origin');
+    let to = element.querySelector('.depart');
 
-    var fromValue = From.value;
-    var fromCode = From.getAttribute('data-airport-code');
+    let fromValue = from.value;
+    let fromCode = from.getAttribute('data-airport-code');
 
-    From.value = To.value;
-    From.setAttribute('data-airport-code', To.getAttribute('data-airport-code'));
+    from.value = to.value;
+    from.setAttribute('data-airport-code', to.getAttribute('data-airport-code'));
 
-    To.value = fromValue;
-    To.setAttribute('data-airport-code', fromCode);
+    to.value = fromValue;
+    to.setAttribute('data-airport-code', fromCode);
 }
 
 
@@ -146,59 +190,59 @@ function ExchangeValue(elmnt) {
  * @param {string} pax - The type of passenger ('adult', 'child', 'infant').
  * @param {string} btn_name - The action ('add' or 'remove').
  */
-function PaxCount(pax, btn_name) {
-    let Adul_num = parseInt(document.getElementById("adult").value);
-    let child_Num = parseInt(document.getElementById("child").value);
-    let Infant_child = parseInt(document.getElementById("infant").value);
+function paxCount(pax, btn_name) {
+    let AdulNum = parseInt(document.getElementById("adult").value);
+    let childNum = parseInt(document.getElementById("child").value);
+    let InfantChild = parseInt(document.getElementById("infant").value);
 
     // --- Handle adding passengers ---
     if (btn_name === 'add') {
         // Total adults and children cannot exceed 9.
-        if ((pax === "adult" || pax === "child") && (Adul_num + child_Num < 9)) {
+        if ((pax === "adult" || pax === "child") && (AdulNum + childNum < 9)) {
             document.getElementById(pax).value = parseInt(document.getElementById(pax).value) + 1;
         }
         // Number of infants cannot exceed the number of adults.
-        if (pax === "infant" && Infant_child < Adul_num) {
+        if (pax === "infant" && InfantChild < AdulNum) {
             document.getElementById(pax).value = parseInt(document.getElementById(pax).value) + 1;
         }
     }
     // --- Handle removing passengers ---
     else if (btn_name === 'remove') {
-        if (pax === "adult" && Adul_num > 1) {
+        if (pax === "adult" && AdulNum > 1) {
             document.getElementById(pax).value = parseInt(document.getElementById(pax).value) - 1;
             // If removing an adult makes infants > adults, remove an infant too.
-            if (parseInt(document.getElementById("infant").value) > (Adul_num - 1)) {
+            if (parseInt(document.getElementById("infant").value) > (AdulNum - 1)) {
                 document.getElementById('infant').value = parseInt(document.getElementById("infant").value) - 1;
             }
-        } else if (pax === "child" && child_Num > 0) {
+        } else if (pax === "child" && childNum > 0) {
             document.getElementById(pax).value = parseInt(document.getElementById(pax).value) - 1;
-        } else if (pax === "infant" && Infant_child > 0) {
+        } else if (pax === "infant" && InfantChild > 0) {
             document.getElementById(pax).value = parseInt(document.getElementById(pax).value) - 1;
         }
     }
 
     // Update live values after any change
-    Adul_num = parseInt(document.getElementById('adult').value);
-    child_Num = parseInt(document.getElementById('child').value);
-    Infant_child = parseInt(document.getElementById('infant').value);
+    AdulNum = parseInt(document.getElementById('adult').value);
+    childNum = parseInt(document.getElementById('child').value);
+    InfantChild = parseInt(document.getElementById('infant').value);
 
     // --- Update button states (disabled/enabled) based on rules ---
-    document.querySelector(".adult_minus_btn").classList.toggle("disableBtn", Adul_num === 1);
-    document.querySelector(".child_minus_btn").classList.toggle('disableBtn', child_Num === 0);
-    document.querySelector(".infant_minus_btn").classList.toggle("disableBtn", Infant_child === 0);
+    document.querySelector(".adult_minus_btn").classList.toggle("disableBtn", AdulNum === 1);
+    document.querySelector(".child_minus_btn").classList.toggle('disableBtn', childNum === 0);
+    document.querySelector(".infant_minus_btn").classList.toggle("disableBtn", InfantChild === 0);
 
-    const totalAdultsAndChildren = Adul_num + child_Num;
+    const totalAdultsAndChildren = AdulNum + childNum;
     document.querySelector(".adult_plus_btn").classList.toggle('disableBtn', totalAdultsAndChildren === 9);
     document.querySelector(".child_plus_btn").classList.toggle("disableBtn", totalAdultsAndChildren === 9);
-    document.querySelector(".infant_plus_btn").classList.toggle("disableBtn", Infant_child === Adul_num);
+    document.querySelector(".infant_plus_btn").classList.toggle("disableBtn", InfantChild === AdulNum);
 
     // --- Update UI display ---
-    updateTravellerDisplay(Adul_num, child_Num, Infant_child);
+    updateTravellerDisplay(AdulNum, childNum, InfantChild);
 
     // --- Store the latest values ---
-    TravellerDetails.Adult = Adul_num;
-    TravellerDetails.child = child_Num;
-    TravellerDetails.Infant = Infant_child;
+    travellerDetails.adult = AdulNum;
+    travellerDetails.child = childNum;
+    travellerDetails.infant = InfantChild;
 }
 
 /**
@@ -208,7 +252,7 @@ function updateTravellerDisplay(adults, children, infants) {
     let totalTravellers = adults + children + infants;
     let paxSearch = document.getElementsByClassName('TravelerClassCount');
     for (let i = 0; i < paxSearch.length; i++) {
-        paxSearch[i].innerHTML = `<h4>${totalTravellers} Traveller</h4> <h4>${TravellerDetails.classType}</h4>`;
+        paxSearch[i].innerHTML = `<h4>${totalTravellers} Traveller</h4> <h4>${travellerDetails.classType}</h4>`;
     }
 }
 
@@ -217,24 +261,24 @@ function updateTravellerDisplay(adults, children, infants) {
  * @param {HTMLElement} Btn - The button element for the class type.
  * @param {string} name - The name of the class type.
  */
-function ClassType(Btn, name) {
+function classType(Btn, name) {
     document.querySelectorAll('.classBtn').forEach(box => box.classList.remove('classTypeBorder'));
     Btn.classList.add('classTypeBorder');
-    TravellerDetails.classType = name;
-    PaxCount('', ''); // Update display
+    travellerDetails.classType = name;
+    paxCount('', ''); // Update display
 }
 
 /**
  * Shows the passenger counter dropdown.
  */
-function ShowPaxCounter() {
+function showPaxCounter() {
     document.getElementById('TravellerCount').classList.remove('travel-content', 'd-none');
 }
 
 /**
  * Hides the passenger counter dropdown after applying changes.
  */
-function ApplyTraveller() {
+function applyTraveller() {
     document.getElementById('TravellerCount').classList.add('travel-content');
 }
 
@@ -245,11 +289,11 @@ function resetAllPaxCounter() {
     document.getElementById("infant").value = 0;
     document.getElementById("child").value = 0;
     document.getElementById("adult").value = 1;
-    TravellerDetails.Adult = 1;
-    TravellerDetails.child = 0;
-    TravellerDetails.Infant = 0;
-    ClassType(document.querySelector('.EconomyClass'), 'Economy');
-    PaxCount('', ''); // Update UI
+    travellerDetails.adult = 1;
+    travellerDetails.child = 0;
+    travellerDetails.infant = 0;
+    classType(document.querySelector('.EconomyClass'), 'Economy');
+    paxCount('', ''); // Update UI
 }
 
 
@@ -260,7 +304,7 @@ function resetAllPaxCounter() {
 /**
  * Adds a new multi-city form segment to the UI.
  */
-function bindMultiCityFrom() {
+function bindMultiCityForm() {
     var searchList = document.querySelectorAll(".MultiForm");
     if (searchList.length >= 6) return; // Max 6 segments allowed.
 
@@ -281,7 +325,7 @@ function bindMultiCityFrom() {
                               <div class="toOriginContent">
                                 <h4>From</h4>
                                 <div class="searchBox">
-                                  <input class="Origin" autocomplete="off" onclick="autobind(this, '0', null)" onkeyup="GetAirportList(this, '0')" type="text" data-airport-code="" placeholder="Origin" />
+                                  <input class="Origin" autocomplete="off" onclick="autoBind(this, '0', null)" onkeyup="getAirportList(this, '0')" type="text" data-airport-code="" placeholder="Origin" />
                                   <div class="dropdown-content">
                                     <ul class="dropdown-wrapper"></ul>
                                   </div>
@@ -289,14 +333,14 @@ function bindMultiCityFrom() {
                               </div>
                             </label>
                           </div>
-                          <div class="toFromSearchSweep" onclick="ExchangeValue(this)"><span class="material-icons">sync_alt</span></div>
+                          <div class="toFromSearchSweep" onclick="exchangeValue(this)"><span class="material-icons">sync_alt</span></div>
                           <div class="toFromSearchDepart search-border">
                             <label class="toDepart">
                               <div class="toDepartIcon"><span class="material-icons">flight</span></div>
                               <div class="ToDepartContent searchBox">
                                 <h4>To</h4>
                                 <div>
-                                  <input class="depart" autocomplete="off" onclick="autobind(this, '1', null)" onkeyup="GetAirportList(this, '1')" data-airport-code="" type="text" placeholder="Destination" />
+                                  <input class="depart" autocomplete="off" onclick="autoBind(this, '1', null)" onkeyup="getAirportList(this, '1')" data-airport-code="" type="text" placeholder="Destination" />
                                   <div class="depart-content">
                                     <ul class="dropdown-wrapper"></ul>
                                   </div>
@@ -337,7 +381,7 @@ function bindMultiCityFrom() {
         format: 'DD MMM YYYY',
         minDate: minDate,
         onafterselect: function (instance, start) {
-            CheckMultiDate(start, newSearchList.length);
+            checkMultiDate(start, newSearchList.length);
         }
     });
 
@@ -360,7 +404,7 @@ function removeMultiCityForm(elem) {
  * @param {Date} date - The selected date.
  * @param {number} index - The index of the segment that was changed.
  */
-function CheckMultiDate(date, index) {
+function checkMultiDate(date, index) {
     var searchList = document.querySelectorAll(".MultiForm");
     for (let i = index; i < searchList.length; i++) {
         caleran("#MultiCity-" + (i + 1), {
@@ -372,7 +416,7 @@ function CheckMultiDate(date, index) {
             format: 'DD MMM YYYY',
             minDate: date.toDate(), // Use the selected date as the new minimum
             onafterselect: function (instance, start) {
-                CheckMultiDate(start, i + 1);
+                checkMultiDate(start, i + 1);
             }
         });
     }
@@ -400,7 +444,7 @@ function showAirlineList(elem) {
 function bindAirLine(airlinelist, elem) {
     let html = "";
     airlinelist.map((e, i) => {
-        html += ` <li class="option ${i == 0 ? 'selectAirline' : ''}" onclick="AddAirline(this)" data-airline-code='${e.airline_code}' data-airline-name='${e.airline_name}'>(${e.airline_code}) ${e.airline_name}  </li>`
+        html += ` <li class="option ${i == 0 ? 'selectAirline' : ''}" onclick="addAirline(this)" data-airline-code='${e.airline_code}' data-airline-name='${e.airline_name}'>(${e.airline_code}) ${e.airline_name}  </li>`
     })
     elem.closest('.SelectList').querySelector('.ListItem').innerHTML = html;
 }
@@ -409,7 +453,7 @@ function bindAirLine(airlinelist, elem) {
  * Handles keyboard navigation (up/down arrows) and fetches airline details on input.
  * @param {HTMLElement} elem - The input element.
  */
-async function GetAirlineDetails(elem) {
+async function getAirlineDetails(elem) {
     let key = window.event;
     let list = document.querySelector('.selectAirline');
 
@@ -438,7 +482,7 @@ async function GetAirlineDetails(elem) {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json', 'OrgId': '2206040706597097092' }
             });
-            const newRequest = UtilService.headerSetup(request);
+            const newRequest = utilService.headerSetup(request);
             const response = await fetch(newRequest);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -452,7 +496,7 @@ async function GetAirlineDetails(elem) {
 
     // Add airline on Enter key press
     if (key.keyCode == 13) {
-        AddAirline(document.querySelector('.selectAirline'));
+        addAirline(document.querySelector('.selectAirline'));
     }
 };
 
@@ -460,13 +504,13 @@ async function GetAirlineDetails(elem) {
  * Adds the selected airline to the list of preferred airlines.
  * @param {HTMLElement} val - The selected 'li' element from the airline list.
  */
-function AddAirline(val) {
+function addAirline(val) {
     let check = document.querySelectorAll(".airlinelist");
     if (check.length <= 2) { // Limit to 3 selected airlines
         let code = val.getAttribute("data-airline-code");
         let name = val.getAttribute("data-airline-name");
         let html = ` <span class='airlinelist' data-airline-code="${code}"> (${code}) ${name}
-      <button onclick="Close(this)">x</button>
+      <button onclick="close(this)">x</button>
     </span>`;
         val.closest('.multiSelect').querySelector(".SearchBox").insertAdjacentHTML("beforeend", html);
         let maindiv = val.closest('.multiSelect').querySelector('input');
@@ -481,7 +525,7 @@ function AddAirline(val) {
  * Closes the dropdown and removes the selected airline tag.
  * @param {HTMLElement} e - The close button element inside the airline tag.
  */
-function Close(e) {
+function close(e) {
     e.closest('.multiSelect').querySelector(".SelectList").classList.remove("ShowAirlineList");
     e.closest(".airlinelist").remove();
     let check = document.querySelectorAll(".airlinelist");
@@ -618,7 +662,7 @@ let tripKey = 'IRT'; // Default trip type: IRT (International Round Trip)
  * Changes the current trip type.
  * @param {string} type - The new trip type key ('OW', 'IRT', 'NMC').
  */
-function ChangeTab(type) {
+function changeTab(type) {
     tripKey = type;
 }
 
@@ -626,7 +670,7 @@ function ChangeTab(type) {
  * Builds the flight search query string and redirects to the search results page.
  * @param {HTMLElement} elem - The search button element.
  */
-function Searchflight(elem) {
+function searchflight(elem) {
     let checkValidation = true;
     let main_div = elem.closest('.CommonSearch');
 
@@ -635,14 +679,14 @@ function Searchflight(elem) {
 
     // --- Base Query String ---
     var querystring = {
-        "adult": TravellerDetails.Adult,
-        "child": TravellerDetails.child,
-        "infant": TravellerDetails.Infant,
+        "adult": travellerDetails.adult,
+        "child": travellerDetails.child,
+        "infant": travellerDetails.infant,
         "langcode": "EN",
         "ref": document.getElementById('Refundable').checked,
         "direct": document.getElementById('DirectFlights').checked,
         "key": tripKey,
-        "triptype": CheckTriptype(tripKey),
+        "triptype": checkTriptype(tripKey),
         'curr': 'AED',
         "airlines": airline_codes.join(','),
     };
@@ -684,7 +728,7 @@ function Searchflight(elem) {
     // --- Redirect to Search Page ---
     sessionStorage.setItem('SerachReqQueryObj', JSON.stringify(querystring));
     var query = new URLSearchParams(querystring).toString();
-    window.location.href = 'https://travel.neuholidays.com/Flight/search?' + query;
+    window.location.href = `${config.domain}/Flight/search?` + query;
 }
 
 
@@ -729,7 +773,7 @@ function showToaster(message) {
  * @param {string} tripKey - The key ('OW', 'IRT', 'NMC').
  * @returns {string} - The numeric type ('1', '2', '3').
  */
-function CheckTriptype(tripKey) {
+function checkTriptype(tripKey) {
     const tripTypes = { 'OW': '1', 'IRT': '2', 'NMC': '3' };
     return tripTypes[tripKey] || '';
 }
@@ -745,7 +789,7 @@ function checkClassType() {
         'PremiumEconomy': 'W',
         'Economy': 'Y'
     };
-    return classCodes[TravellerDetails.classType] || 'Y';
+    return classCodes[travellerDetails.classType] || 'Y';
 }
 
 /**
@@ -753,8 +797,8 @@ function checkClassType() {
  * @param {HTMLElement} elem - The expand/collapse element.
  */
 function advancedField(elem) {
-    advancedSerch = !advancedSerch;
-    elem.closest('div').querySelector(".expander_more").classList.toggle('d-none', advancedSerch);
-    elem.querySelector('.expand-less').classList.toggle('d-none', advancedSerch);
-    elem.querySelector('.expand-more').classList.toggle('d-none', !advancedSerch);
+    advancedSearch = !advancedSearch;
+    elem.closest('div').querySelector(".expander_more").classList.toggle('d-none', advancedSearch);
+    elem.querySelector('.expand-less').classList.toggle('d-none', advancedSearch);
+    elem.querySelector('.expand-more').classList.toggle('d-none', !advancedSearch);
 }

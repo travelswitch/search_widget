@@ -93,21 +93,21 @@
                 <li
                   class="active1 TripTypeBtn"
                   data-tab-id="tab1"
-                  onclick="ChangeTab('IRT')"
+                  onclick="changeTab('IRT')"
                 >
                   Round Trip
                 </li>
                 <li
                   class="TripTypeBtn"
                   data-tab-id="tab2"
-                  onclick="ChangeTab('OW')"
+                  onclick="changeTab('OW')"
                 >
                   One Way
                 </li>
                 <li
                   class="TripTypeBtn"
                   data-tab-id="tab3"
-                  onclick="ChangeTab('NMC')"
+                  onclick="changeTab('NMC')"
                 >
                   Multi City
                 </li>
@@ -130,8 +130,8 @@
                                     class="dropdown airportlist Origin"
                                     autocomplete="off"
                                     id="IRT_Origin"
-                                    onclick="autobind(this , '0' ,null)"
-                                    onkeyup="GetAirportList(this , '0')"
+                                    onclick="autoBind(this , '0' ,null)"
+                                    onkeyup="getAirportList(this , '0')"
                                     type="text"
                                     data-airport-code=""
                                     placeholder="Origin"
@@ -166,8 +166,8 @@
                                           class="airportlist mobileSearch"
                                           autocomplete="off"
                                           id="IRT_Origin"
-                                          onclick="autobind(this , '0' ,null)"
-                                          onkeyup="GetAirportList(this , '0')"
+                                          onclick="autoBind(this , '0' ,null)"
+                                          onkeyup="getAirportList(this , '0')"
                                           type="text"
                                           data-airport-code=""
                                           placeholder="Search Where Are You Flying"
@@ -191,7 +191,7 @@
                           </div>
                           <div
                             class="toFromSearchSweep"
-                            onclick="ExchangeValue(this)"
+                            onclick="exchangeValue(this)"
                           >
                             <span class="material-icons"> sync_alt </span>
                           </div>
@@ -206,8 +206,8 @@
                                   <input
                                     class="depart"
                                     autocomplete="off"
-                                    onclick="autobind(this , '1' ,null)"
-                                    onkeyup="GetAirportList(this , '1')"
+                                    onclick="autoBind(this , '1' ,null)"
+                                    onkeyup="getAirportList(this , '1')"
                                     data-airport-code=""
                                     type="text"
                                     id="IRT_Departure"
@@ -241,8 +241,8 @@
                                         <input
                                           class="mobileSearch"
                                           autocomplete="off"
-                                          onclick="autobind(this , '1' ,null)"
-                                          onkeyup="GetAirportList(this , '1')"
+                                          onclick="autoBind(this , '1' ,null)"
+                                          onkeyup="getAirportList(this , '1')"
                                           data-airport-code=""
                                           type="text"
                                           id="IRT_Departure"
@@ -319,7 +319,7 @@
                       <div class="TravelerClass">
                         <div class="TravelerClassWrapper">
                           <div
-                            onclick="ShowPaxCounter()"
+                            onclick="showPaxCounter()"
                             class="TravelerClassBox"
                           >
                             <div class="TravelerIcon">
@@ -391,7 +391,7 @@
                                     <input
                                       type="text"
                                       autocomplete="off"
-                                      onkeyup="GetAirlineDetails(this)"
+                                      onkeyup="getAirlineDetails(this)"
                                     />
                                   </div>
                                   <ul class="ListItem"></ul>
@@ -411,7 +411,7 @@
                       <div class="searchFormButton">
                         <button
                           class="SearchBtn ripple"
-                          onclick="Searchflight(this)"
+                          onclick="searchflight(this)"
                         >
                           <span class="material-icons"> search </span>
                         </button>
@@ -435,8 +435,8 @@
                                   <input
                                     class="dropdown Origin"
                                     autocomplete="off"
-                                    onclick="autobind(this , '0' ,null)"
-                                    onkeyup="GetAirportList(this , '0')"
+                                    onclick="autoBind(this , '0' ,null)"
+                                    onkeyup="getAirportList(this , '0')"
                                     id="OW_Origin"
                                     data-airport-code=""
                                     placeholder="Origin"
@@ -582,6 +582,42 @@
                                         </span>
                                       </div>
                                       <span class="airportCode">AUH</span>
+                                    </li>
+                                    <li class="dropdown-item">
+                                      <div class="autoCompleteIcon">
+                                        <svg focusable="false" color="inherit" fill="currentcolor" aria-hidden="true"
+                                          role="presentation" viewBox="0 0 150 150" preserveAspectRatio="xMidYMid meet"
+                                          width="24px" height="24px" class="sc-bxivhb dttlRz sc-jxGEyO iICATY">
+                                          <path
+                                            d="M118.9 15.7L90.7 43.9l-80.9-25c-1.6-.4-3.3 0-4.6 1.1L.7 24.5c-.9.8-.9 2.1-.2 3 .2.2.4.3.6.4l65.2 40.4-24 24c-3.8 3.7-7.2 7.8-10.2 12.2l-18.2-5c-1.6-.4-3.3.1-4.6 1.2l-3.5 3.5c-1 .8-1 2.3-.2 3.3l.4.4 18.6 13.9.6.5-.2.5c-1.8 3.7-1.2 4.3 2.5 2.5l.5-.2c.2.2.3.4.5.6l13.9 18.6c.7 1 2.2 1.3 3.2.6.1-.1.3-.2.4-.3l3.5-3.5c1.1-1.3 1.6-3 1.2-4.6l-5-18.2c4.4-3 8.5-6.4 12.2-10.2l24-24 40.1 64.7c.6 1 1.8 1.4 2.8.8.2-.1.4-.3.6-.4l4.5-4.5c1.1-1.2 1.5-3 1.1-4.6l-24.9-80.3 28.4-28.4C150 15.9 152 4.9 148.7 1.6S134.4.2 118.9 15.7z">
+                                          </path>
+                                        </svg>
+                                      </div>
+                                      <div class="ListTypeCity">
+                                        <span> Abu Dhabi </span>
+                                        <span>
+                                          Abu Dhabi International Airport
+                                        </span>
+                                      </div>
+                                      <span class="airportCode">AUH</span>
+                                    </li>
+                                    <li class="dropdown-item">
+                                      <div class="autoCompleteIcon">
+                                        <svg focusable="false" color="inherit" fill="currentcolor" aria-hidden="true"
+                                          role="presentation" viewBox="0 0 150 150" preserveAspectRatio="xMidYMid meet"
+                                          width="24px" height="24px" class="sc-bxivhb dttlRz sc-jxGEyO iICATY">
+                                          <path
+                                            d="M118.9 15.7L90.7 43.9l-80.9-25c-1.6-.4-3.3 0-4.6 1.1L.7 24.5c-.9.8-.9 2.1-.2 3 .2.2.4.3.6.4l65.2 40.4-24 24c-3.8 3.7-7.2 7.8-10.2 12.2l-18.2-5c-1.6-.4-3.3.1-4.6 1.2l-3.5 3.5c-1 .8-1 2.3-.2 3.3l.4.4 18.6 13.9.6.5-.2.5c-1.8 3.7-1.2 4.3 2.5 2.5l.5-.2c.2.2.3.4.5.6l13.9 18.6c.7 1 2.2 1.3 3.2.6.1-.1.3-.2.4-.3l3.5-3.5c1.1-1.3 1.6-3 1.2-4.6l-5-18.2c4.4-3 8.5-6.4 12.2-10.2l24-24 40.1 64.7c.6 1 1.8 1.4 2.8.8.2-.1.4-.3.6-.4l4.5-4.5c1.1-1.2 1.5-3 1.1-4.6l-24.9-80.3 28.4-28.4C150 15.9 152 4.9 148.7 1.6S134.4.2 118.9 15.7z">
+                                          </path>
+                                        </svg>
+                                      </div>
+                                      <div class="ListTypeCity">
+                                        <span> Abu Dhabi </span>
+                                        <span>
+                                          Abu Dhabi International Airport
+                                        </span>
+                                      </div>
+                                      <span class="airportCode">AUH</span>
                                     </li> -->
                                     </ul>
                                   </div>
@@ -591,7 +627,7 @@
                           </div>
                           <div
                             class="toFromSearchSweep"
-                            onclick="ExchangeValue(this)"
+                            onclick="exchangeValue(this)"
                           >
                             <span class="material-icons"> sync_alt </span>
                           </div>
@@ -606,8 +642,8 @@
                                   <input
                                     class="depart"
                                     autocomplete="off"
-                                    onclick="autobind(this , '1' ,null)"
-                                    onkeyup="GetAirportList(this , '1')"
+                                    onclick="autoBind(this , '1' ,null)"
+                                    onkeyup="getAirportList(this , '1')"
                                     type="text"
                                     id="OW_departure"
                                     placeholder="Destination"
@@ -685,7 +721,7 @@
                       <div class="TravelerClass">
                         <div class="TravelerClassWrapper">
                           <div
-                            onclick="ShowPaxCounter()"
+                            onclick="showPaxCounter()"
                             class="TravelerClassBox"
                           >
                             <div class="TravelerIcon">
@@ -702,7 +738,7 @@
                       <div class="searchFormButton">
                         <button
                           class="SearchBtn ripple"
-                          onclick="Searchflight(this)"
+                          onclick="searchflight(this)"
                         >
                           <span class="material-icons"> search </span>
                         </button>
@@ -720,7 +756,7 @@
                         <div
                           class="addMoreMC"
                           id="addMultiCityForm"
-                          onclick="bindMultiCityFrom()"
+                          onclick="bindMultiCityForm()"
                         >
                           <h4>Add Another City</h4>
                           <span class="material-icons"> add</span>
@@ -732,7 +768,7 @@
                           <div class="TravelerClass Flex-w">
                             <div class="TravelerClassWrapper">
                               <div
-                                onclick="ShowPaxCounter()"
+                                onclick="showPaxCounter()"
                                 class="TravelerClassBox"
                               >
                                 <div class="TravelerIcon">
@@ -748,7 +784,7 @@
                           <div class="searchFormButton MCSrhBtn">
                             <button
                               class="SearchBtn ripple"
-                              onclick="Searchflight(this)"
+                              onclick="searchflight(this)"
                             >
                               <span class="material-icons"> search </span>
                             </button>
@@ -798,7 +834,7 @@
                               <input
                                 type="text"
                                 autocomplete="off"
-                                onkeyup="GetAirlineDetails(this)"
+                                onkeyup="getAirlineDetails(this)"
                               />
                             </div>
                             <ul class="ListItem"></ul>
@@ -831,9 +867,9 @@
                       <h4>Destination</h4>
                       <input
                         type="text"
-                        onclick="ShowHotelList(this)"
+                        onclick="showHotelList(this)"
                         autocomplete="off"
-                        onkeyup="GethotelList(this)"
+                        onkeyup="getHotelList(this)"
                         autocomplete="off"
                         id="FromHotel"
                         data-countryCode=""
@@ -883,7 +919,7 @@
                         type="text"
                         onclick="showNationality(this)"
                         autocomplete="off"
-                        onkeyup="GetNationalityList(this)"
+                        onkeyup="getNationalityList(this)"
                         data-countryCode=""
                         class="NationalityInput"
                         id="FromNationality"
@@ -1101,21 +1137,21 @@
                       </div>
                       <div
                         class="HotelSearchOtionContent"
-                        onclick="apply_people(this)"
+                        onclick="applyPeople(this)"
                         data-room="1Room1Adult"
                       >
                         <a> 1 Room, 1 Adult, 0 Child</a>
                       </div>
                       <div
                         class="HotelSearchOtionContent"
-                        onclick="apply_people(this)"
+                        onclick="applyPeople(this)"
                         data-room="1Room2Adult"
                       >
                         <a> 1 Room, 2 Adult, 0 Child</a>
                       </div>
                       <div
                         class="HotelSearchOtionContent"
-                        onclick="apply_people(this)"
+                        onclick="applyPeople(this)"
                         data-room="addmore"
                       >
                         <a> More Option</a>
@@ -1159,7 +1195,7 @@
                     </div>
                   </div>
                   <!-- dynamic -->
-                  <div class="addMoreTravller" onclick="addmore_rooms()">
+                  <div class="addMoreTravller" onclick="addMoreRooms()">
                     <h5>
                       <span class="material-icons"> add </span>
                       <span> Add Another Room </span>
@@ -1178,7 +1214,7 @@
     <div class="travel-content TravelDropdown" id="TravellerCount">
       <div class="mobileBack">
         <div class="mobileHead">
-          <button class="mobileBackButton toggle" onclick="ApplyTraveller()">
+          <button class="mobileBackButton toggle" onclick="applyTraveller()">
             <span class="material-icons"> arrow_back </span>
           </button>
           <div class="mobileTitle">
@@ -1191,7 +1227,7 @@
           <h4>Travel Class</h4>
           <div class="travelerBtnGrp">
             <button
-              onclick="ClassType(this , 'Economy')"
+              onclick="classType(this , 'Economy')"
               class="classBtn EconomyClass classTypeBorder"
             >
               <span>Economy</span>
@@ -1199,7 +1235,7 @@
               <span class="travelerCircal"> </span>
             </button>
             <button
-              onclick="ClassType(this , 'PremiumEconomy')"
+              onclick="classType(this , 'PremiumEconomy')"
               class="classBtn"
             >
               <span>Premium Economy</span>
@@ -1208,7 +1244,7 @@
               <span class="travelerCircal"> </span>
             </button>
             <button
-              onclick="ClassType(this , 'BusinessClass')"
+              onclick="classType(this , 'BusinessClass')"
               class="classBtn"
             >
               <span>Business Class</span>
@@ -1216,7 +1252,7 @@
 
               <span class="travelerCircal"> </span>
             </button>
-            <button onclick="ClassType(this , 'FirstClass')" class="classBtn">
+            <button onclick="classType(this , 'FirstClass')" class="classBtn">
               <span>First Class</span>
               <span class="material-icons"> done </span>
 
@@ -1230,7 +1266,7 @@
             <p class="TravelerType">Adult (12+ years)</p>
             <div class="TravelerSteps">
               <button
-                onclick="PaxCount('adult' , 'remove')"
+                onclick="paxCount('adult' , 'remove')"
                 class="adult_minus_btn"
               >
                 <span class="material-icons"> remove </span>
@@ -1243,7 +1279,7 @@
                 value="1"
               />
               <button
-                onclick="PaxCount('adult' , 'add')"
+                onclick="paxCount('adult' , 'add')"
                 class="adult_plus_btn"
               >
                 <span class="material-icons"> add </span>
@@ -1254,7 +1290,7 @@
             <p class="TravelerType">Child (2 -11 years)</p>
             <div class="TravelerSteps">
               <button
-                onclick="PaxCount('child' , 'remove')"
+                onclick="paxCount('child' , 'remove')"
                 class="child_minus_btn"
               >
                 <span class="material-icons"> remove </span>
@@ -1267,7 +1303,7 @@
                 value="0"
               />
               <button
-                onclick="PaxCount('child' , 'add')"
+                onclick="paxCount('child' , 'add')"
                 class="child_plus_btn"
               >
                 <span class="material-icons"> add </span>
@@ -1278,7 +1314,7 @@
             <p class="TravelerType">Infant (Under 2 years)</p>
             <div class="TravelerSteps">
               <button
-                onclick="PaxCount('infant' , 'remove' )"
+                onclick="paxCount('infant' , 'remove' )"
                 class="infant_minus_btn"
               >
                 <span class="material-icons"> remove </span>
@@ -1291,7 +1327,7 @@
                 value="0"
               />
               <button
-                onclick="PaxCount('infant' , 'add')"
+                onclick="paxCount('infant' , 'add')"
                 class="infant_plus_btn"
               >
                 <span class="material-icons"> add </span>
@@ -1302,7 +1338,7 @@
       </div>
       <div class="TravelerCountClassFooter">
         <button onclick="resetAllPaxCounter()">Reset</button>
-        <button onclick="ApplyTraveller()">Apply</button>
+        <button onclick="applyTraveller()">Apply</button>
       </div>
     </div>
     <!--  toaster  -->
@@ -1331,7 +1367,6 @@
       />
       <span></span>
     </div>
-
     <script src="./config/config.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.2.1/jsencrypt.min.js"></script>
     <script src="./build/js/util.js"></script>
