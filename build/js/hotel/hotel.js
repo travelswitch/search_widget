@@ -1,514 +1,585 @@
+/**
+ * @file Hotel search and booking functionality.
+ * @author Abdul Razzak
+ * @description This file contains all the JavaScript code for handling the hotel search widget,
+ * including room and passenger selection, destination and nationality search, date selection,
+ * and constructing the final search query.
+ */
 
+// ---=== Room and Pax Selection ===--- //
+
+/**
+ * Toggles the visibility of the room and passenger selection dropdown.
+ */
 function roomCount() {
-    document.getElementById("roomPax").classList.add("showRoomPax");
+    document.getElementById("roomPax").classList.toggle("showRoomPax");
 }
 
+/**
+ * Adds a new room interface to the DOM, up to a maximum of 6 rooms.
+ */
 function addmore_rooms() {
-    var rooms = document.querySelectorAll(".HotelNoRoomWrapper");
-    html = "";
-    let RemoveHtml = `
-        <div class="closeRoomCard" onclick="RemoveRoom(this)">
-        <span class="material-icons"> close </span>
-        </div>  `
+    const rooms = document.querySelectorAll(".HotelNoRoomWrapper");
+    const MAX_ROOMS = 6;
 
-    if (rooms.length < 6) {
-        html = `<div class="HotelNoRoomWrapper">
-      <div class="HotelNoRoomTitle">
-        <span class="material-icons"> local_hotel </span>
-        <h4 class="Rooms_no">Room ${rooms.length + 1}</h4>
-      </div>
-      <div class="HotelNoRoomCount AdultPax">
-        <div class="HotelTravelerSteps">
-          <button  class="opacity" onclick="AddAdultPax(this , false)">
-            <span class="material-icons"> remove </span>
-          </button>
-          <input type="text" value="1" autocomplete="off"  readonly />
-          <button  onclick="AddAdultPax(this , true)">
-            <span class="material-icons"> add </span>
-          </button>
-        </div>
-      </div>
-      <div class="HotelNoRoomCount ChildPax">
-        <div class="HotelTravelerSteps">
-          <button class="opacity" onclick="AddChildPax(this , false)">
-            <span class="material-icons"> remove </span>
-          </button>
-          <input type="text" value="0" autocomplete="off" readonly />
-          <button   onclick="AddChildPax(this , true)">
-            <span class="material-icons"> add </span>
-          </button>
-        </div>
-      </div>
-      <div class="HotelNoageChild">
-        
-      </div>
-      ${rooms.length != 0 ? RemoveHtml : ''}
-    </div> `
+    if (rooms.length < MAX_ROOMS) {
+        const removeButtonHtml = `
+            <div class="closeRoomCard" onclick="RemoveRoom(this)">
+                <span class="material-icons">close</span>
+            </div>`;
+
+        const newRoomHtml = `
+            <div class="HotelNoRoomWrapper">
+                <div class="HotelNoRoomTitle">
+                    <span class="material-icons">local_hotel</span>
+                    <h4 class="Rooms_no">Room ${rooms.length + 1}</h4>
+                </div>
+                <div class="HotelNoRoomCount AdultPax">
+                    <div class="HotelTravelerSteps">
+                        <button class="opacity" onclick="AddAdultPax(this, false)">
+                            <span class="material-icons">remove</span>
+                        </button>
+                        <input type="text" value="1" autocomplete="off" readonly />
+                        <button onclick="AddAdultPax(this, true)">
+                            <span class="material-icons">add</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="HotelNoRoomCount ChildPax">
+                    <div class="HotelTravelerSteps">
+                        <button class="opacity" onclick="AddChildPax(this, false)">
+                            <span class="material-icons">remove</span>
+                        </button>
+                        <input type="text" value="0" autocomplete="off" readonly />
+                        <button onclick="AddChildPax(this, true)">
+                            <span class="material-icons">add</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="HotelNoageChild"></div>
+                ${rooms.length !== 0 ? removeButtonHtml : ''}
+            </div>`;
+
+        const moreOptionElem = document.getElementById('MoreOption').querySelector('.addMoreTravller');
+        moreOptionElem.insertAdjacentHTML("beforebegin", newRoomHtml);
     }
-    if (rooms.length >= 5) document.getElementById('MoreOption').querySelector('.addMoreTravller').classList.add("HotelPaxSelectOption");
-    document.getElementById('MoreOption').querySelector('.addMoreTravller').insertAdjacentHTML("beforebegin", html)
+
+    // Disable 'add more' button if room limit is reached
+    if (document.querySelectorAll(".HotelNoRoomWrapper").length >= MAX_ROOMS) {
+        document.getElementById('MoreOption').querySelector('.addMoreTravller').classList.add("HotelPaxSelectOption");
+    }
+
     TravellerCounter('');
 }
+
+// Initialize with one room by default
 addmore_rooms();
 
-
+/**
+ * Removes a room from the DOM and re-indexes the remaining rooms.
+ * @param {HTMLElement} elem - The close button element that was clicked.
+ */
 function RemoveRoom(elem) {
     elem.closest(".HotelNoRoomWrapper").remove();
-    let allRoom = document.querySelectorAll(".HotelNoRoomWrapper")
-    allRoom.forEach((e, i) => {
-        e.querySelector('.Rooms_no').innerHTML = `Room ${i + 1} `
+    const allRooms = document.querySelectorAll(".HotelNoRoomWrapper");
+
+    allRooms.forEach((room, index) => {
+        room.querySelector('.Rooms_no').innerHTML = `Room ${index + 1}`;
     });
+
     TravellerCounter('');
+    // Re-enable the 'add more' button as we are now below the limit
     document.getElementById('MoreOption').querySelector('.addMoreTravller').classList.remove("HotelPaxSelectOption");
-};
+}
 
+/**
+ * Updates the number of children for a specific room and adds/removes age selectors accordingly.
+ * @param {HTMLElement} elem - The button element (+ or -) that was clicked.
+ * @param {boolean} isIncrement - True to add a child, false to remove.
+ */
+function AddChildPax(elem, isIncrement) {
+    const input = isIncrement ? elem.previousElementSibling : elem.nextElementSibling;
+    const currentValue = parseInt(input.value, 10);
+    const MAX_CHILDREN = 4;
+    const MIN_CHILDREN = 0;
 
-function AddChildPax(elem, check) {
-
-    if (check) {
-        if (elem.previousElementSibling.value <= 3) {
-            elem.previousElementSibling.value++
-            elem.previousElementSibling.previousElementSibling.disabled = false
-            elem.previousElementSibling.previousElementSibling.style.opacity = '1'
-            children_number(elem, check, elem.previousElementSibling.value)
-            TravellerCounter('');
-        } if (elem.previousElementSibling.value == 4) {
-            elem.disabled = true;
-            elem.style.opacity = '0.6';
-        }
-    } else {
-        if (elem.nextElementSibling.value >= 1) {
-            elem.nextElementSibling.nextElementSibling.disabled = false;
-            elem.nextElementSibling.nextElementSibling.style.opacity = '1';
-            elem.nextElementSibling.value--;
-            children_number(elem, check, elem.nextElementSibling.value);
-            TravellerCounter('');
-        } if (elem.nextElementSibling.value == 0) {
-            elem.disabled = true;
-            elem.style.opacity = '0.6';
-        }
+    if (isIncrement && currentValue < MAX_CHILDREN) {
+        input.value = currentValue + 1;
+        children_number(elem, true, input.value);
+    } else if (!isIncrement && currentValue > MIN_CHILDREN) {
+        input.value = currentValue - 1;
+        children_number(elem, false, input.value);
     }
-    if (true) {
-        if (document.querySelector('.child_1')) {
-            document.querySelector('.Child-one').classList.remove('d-none');;
-        } else document.querySelector('.Child-one').classList.add('d-none');
-        if (document.querySelector('.child_2')) {
-            document.querySelector('.Child-two').classList.remove('d-none');
-        } else document.querySelector('.Child-two').classList.add('d-none');
-        if (document.querySelector('.child_3')) {
-            document.querySelector('.Child-three').classList.remove('d-none');
-        } else document.querySelector('.Child-three').classList.add('d-none');
-        if (document.querySelector('.child_4')) {
-            document.querySelector('.Child-four').classList.remove('d-none');
-        } else document.querySelector('.Child-four').classList.add('d-none');
+
+    // Update button states (disabled/enabled)
+    const currentVal = parseInt(input.value, 10);
+    elem.closest('.HotelTravelerSteps').querySelector('button:first-child').disabled = currentVal === MIN_CHILDREN;
+    elem.closest('.HotelTravelerSteps').querySelector('button:last-child').disabled = currentVal === MAX_CHILDREN;
+    elem.closest('.HotelTravelerSteps').querySelector('button:first-child').style.opacity = currentVal === MIN_CHILDREN ? '0.6' : '1';
+    elem.closest('.HotelTravelerSteps').querySelector('button:last-child').style.opacity = currentVal === MAX_CHILDREN ? '0.6' : '1';
+
+
+    TravellerCounter('');
+}
+
+/**
+ * Updates the number of adults for a specific room.
+ * @param {HTMLElement} elem - The button element (+ or -) that was clicked.
+ * @param {boolean} isIncrement - True to add an adult, false to remove.
+ */
+function AddAdultPax(elem, isIncrement) {
+    const input = isIncrement ? elem.previousElementSibling : elem.nextElementSibling;
+    const currentValue = parseInt(input.value, 10);
+    const MAX_ADULTS = 6;
+    const MIN_ADULTS = 1;
+
+    if (isIncrement && currentValue < MAX_ADULTS) {
+        input.value = currentValue + 1;
+    } else if (!isIncrement && currentValue > MIN_ADULTS) {
+        input.value = currentValue - 1;
     }
-};
-function AddAdultPax(elem, check) {
 
-    if (check) {
-        if (elem.previousElementSibling.value <= 5) {
-            elem.previousElementSibling.value++;
-            elem.previousElementSibling.previousElementSibling.disabled = false;
-            elem.previousElementSibling.previousElementSibling.style.opacity = '1';
-            TravellerCounter('');
-        } if (elem.previousElementSibling.value == 6) {
+    // Update button states (disabled/enabled)
+    const currentVal = parseInt(input.value, 10);
+    elem.closest('.HotelTravelerSteps').querySelector('button:first-child').disabled = currentVal === MIN_ADULTS;
+    elem.closest('.HotelTravelerSteps').querySelector('button:last-child').disabled = currentVal === MAX_ADULTS;
+    elem.closest('.HotelTravelerSteps').querySelector('button:first-child').style.opacity = currentVal === MIN_ADULTS ? '0.6' : '1';
+    elem.closest('.HotelTravelerSteps').querySelector('button:last-child').style.opacity = currentVal === MAX_ADULTS ? '0.6' : '1';
 
-            elem.disabled = true;
-            elem.style.opacity = '0.6';
-        }
-    } else {
-        if (elem.nextElementSibling.value >= 2) {
-            elem.nextElementSibling.value--;
-            elem.nextElementSibling.nextElementSibling.disabled = false;
-            elem.nextElementSibling.nextElementSibling.style.opacity = '1';
-            TravellerCounter('');
-        } if (elem.nextElementSibling.value == 1) {
-            elem.disabled = true;
-            elem.style.opacity = '0.6';
-        }
-    }
-};
+    TravellerCounter('');
+}
 
-
-
-
+/**
+ * Applies the selected passenger and room configuration and closes the dropdown.
+ * @param {HTMLElement} elem - The "Apply" button element.
+ */
 function apply_people(elem) {
     if (elem) {
-        TravellerCounter(elem.getAttribute('data-room'))
+        const roomType = elem.getAttribute('data-room');
+        TravellerCounter(roomType);
         document.getElementById("roomPax").classList.remove("showRoomPax");
-        if (elem.getAttribute('data-room') == "addmore") {
-            document.getElementById("MoreOption").classList.remove("moreOptionWrapper")
-        } else document.getElementById("MoreOption").classList.add("moreOptionWrapper")
+
+        // Toggle visibility of the detailed room selection vs single-line options
+        if (roomType === "addmore") {
+            document.getElementById("MoreOption").classList.remove("moreOptionWrapper");
+        } else {
+            document.getElementById("MoreOption").classList.add("moreOptionWrapper");
+        }
     }
-};
+}
 
-
-var RoomDetails = []
+var RoomDetails = [];
+/**
+ * Gathers room, adult, and child data from the DOM and updates the summary.
+ * @param {string} optionType - A preset option like "1Room2Adult" or "1Room1Adult", or empty for custom.
+ */
 function TravellerCounter(optionType) {
-    console.log(RoomDetails)
     let searchRooms = [];
-    let totalRooms = "";
+    
+    const presets = {
+        "1Room2Adult": { adult: "2", child: "0", childAge: [] },
+        "1Room1Adult": { adult: "1", child: "0", childAge: [] }
+    };
 
-    if (optionType === "1Room2Adult") {
-        let array_age = [];
-        let data = {
-            "adult": "2",
-            "child": "0",
-            "childAge": array_age
-        }
-        searchRooms.push(data);
-        totalRooms = "1";
-    } else if (optionType === "1Room1Adult") {
-        let array_age = [];
-        let data = {
-            "adult": "1",
-            "child": "0",
-            "childAge": array_age
-        }
-        totalRooms = "1";
-        searchRooms.push(data);
+    if (presets[optionType]) {
+        searchRooms.push(presets[optionType]);
     } else {
-        let roomElem = [...document.querySelector('#MoreOption').querySelectorAll('.HotelNoRoomWrapper')];
-        let roomData = roomElem.map(e => {
-            let adultVal = e.querySelector('.AdultPax').querySelector('input').value;
-            let childVal = e.querySelector('.ChildPax').querySelector('input').value;
-            let html = e.querySelector('.HotelNoageChild').querySelectorAll('.HotelNoageSelect');
-            let array_age = [...html].map(elem => elem.querySelector('.select_control').value);
+        const roomElems = [...document.querySelector('#MoreOption').querySelectorAll('.HotelNoRoomWrapper')];
+        const roomData = roomElems.map(e => {
+            const adultVal = e.querySelector('.AdultPax input').value;
+            const childVal = e.querySelector('.ChildPax input').value;
+            const ageElems = e.querySelectorAll('.HotelNoageChild .HotelNoageSelect .select_control');
+            const childAges = [...ageElems].map(elem => elem.value);
             return {
                 'adult': adultVal,
                 'child': childVal,
-                'childAge': array_age
-            }
+                'childAge': childAges
+            };
         });
         searchRooms = [...roomData];
-        totalRooms = searchRooms.length;
     }
+
     RoomDetails = searchRooms;
     getRoomsInfo(searchRooms);
 }
-TravellerCounter('1Room2Adult')
 
+// Initialize with default: 1 Room, 2 Adults
+TravellerCounter('1Room2Adult');
+
+/**
+ * Calculates total rooms, adults, and children and updates the display input.
+ * @param {Array<object>} rooms - An array of room objects with adult, child, and childAge details.
+ */
 function getRoomsInfo(rooms) {
-    let roomsInfo = rooms.reduce((acc, elem) =>
-    (
-        {
-            Adult: parseInt(acc.Adult) + parseInt(elem.adult),
-            Child: parseInt(acc.Child) + parseInt(elem.child)
-        })
-        , ({ Adult: 0, Child: 0 }));
-    roomsInfo['Rooms'] = rooms.length;
-    console.log(roomsInfo)
-    document.getElementById('RoomCount').value = `${rooms.length} Room, ${roomsInfo.Adult} Adult ${roomsInfo.Child > 0 ? ', ' + roomsInfo.Child + ' Child' : ''}`;
+    const roomsInfo = rooms.reduce((acc, elem) => ({
+        Adult: acc.Adult + parseInt(elem.adult, 10),
+        Child: acc.Child + parseInt(elem.child, 10)
+    }), { Adult: 0, Child: 0 });
+
+    const childText = roomsInfo.Child > 0 ? `, ${roomsInfo.Child} Child` : '';
+    document.getElementById('RoomCount').value = `${rooms.length} Room, ${roomsInfo.Adult} Adult${childText}`;
+}
+
+/**
+ * Adds or removes a child age dropdown selector.
+ * @param {HTMLElement} elem - The button element inside the room that triggered the change.
+ * @param {boolean} isAdd - True to add a dropdown, false to remove the last one.
+ * @param {number} index - The current number of children, used for class naming.
+ */
+function children_number(elem, isAdd, index) {
+    const ageContainer = elem.closest(".HotelNoRoomWrapper").querySelector(".HotelNoageChild");
+    if (isAdd) {
+        const childAgeHtml = `
+            <div class="HotelNoageSelect child_${index}">
+                <select class="select_control" onchange="TravellerCounter('')">
+                    <option value="1">Under 1</option>
+                    ${Array.from({ length: 11 }, (_, i) => `<option value="${i + 2}">${i + 2}</option>`).join('')}
+                </select>
+            </div>`;
+        ageContainer.insertAdjacentHTML("beforeend", childAgeHtml);
+    } else {
+        const lastChild = ageContainer.querySelector(".HotelNoageSelect:last-child");
+        if (lastChild) {
+            lastChild.remove();
+        }
+    }
+    TravellerCounter('');
 }
 
 
-// child count
-
-function children_number(elem, check, index) {
-    let html = "";
-    console.log(index)
-    if (check) {
-        html += ` <div class="HotelNoageSelect child_${index}">
-      <select class="select_control" onchange="TravellerCounter('')">
-        <option value="1">Under 1</option>
-        <option value="2">2 </option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-        <option value="11">11</option>
-      </select>
-    </div> 
-    `;
-        elem.closest(".HotelNoRoomWrapper").querySelector(".HotelNoageChild").insertAdjacentHTML("beforeend", html)
-    } else {
-        let elemet = elem.closest(".HotelNoRoomWrapper").querySelectorAll(".HotelNoageSelect");
-        let ind =
-            elemet.length - 1
-        elemet[ind].remove();
-    }
-    TravellerCounter('');
-};
-
-
-//  hote api 
+// ---=== Hotel Destination Search ===--- //
 
 let HotelList = [];
 let NationalityList = [];
-getBindHotelList()
-async function getBindHotelList(inp) {
-    const response = await fetch("https://adminapi.uat.futuretravelplatform.com/api/CityMaster/GetSelectedCity?cityCode=39942,12568,41325,38997,33324&LangCode=EN", {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json', 'OrgId': '2206040706597097092' }
-    });
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    HotelList = data
-    console.log(data)
 
-}
-//  onkeyup
-
-async function GethotelList(Input) {
-    if (Input.value.length >= 2) {
-        const response = await fetch("https://hotelapi.uat.futuretravelplatform.com/api/hotel/location?searchKey=" + Input.value + "&langCode=EN", {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json', 'OrgId': '2206040706597097092' }
-        });
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        HotelList = data
-        autoHotelListbind(Input)
-        console.log(data)
+/**
+ * Fetches a default list of popular cities on page load.
+ */
+async function getBindHotelList() {
+    const url = `${config.adminApiUrl}/CityMaster/GetSelectedCity?cityCode=39942,12568,41325,38997,33324&LangCode=EN`;
+    const headers = { 'Content-Type': 'application/json', 'OrgId': '2206040706597097092' };
+    try {
+        const request = new Request(url, { method: 'GET', headers });
+        const newRequest = UtilService.headerSetup(request);
+        const response = await fetch(newRequest);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        HotelList = await response.json();
+    } catch (error) {
+        console.error("Failed to fetch initial hotel list:", error);
     }
 }
+getBindHotelList(); // Fetch on initial load
 
-//  bind hotel list
+/**
+ * Fetches hotel locations based on user input (autocomplete).
+ * @param {HTMLInputElement} input - The input element for the hotel destination.
+ */
+async function GethotelList(input) {
+    if (input.value.length < 2) return;
+    const url = `${config.hotelApiUrl}/hotel/location?searchKey=${input.value}&langCode=EN`;
+    const headers = { 'Content-Type': 'application/json', 'OrgId': '2206040706597097092' };
+    try {
+        const request = new Request(url, { method: 'GET', headers });
+        const newRequest = UtilService.headerSetup(request);
+        const response = await fetch(newRequest);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        HotelList = await response.json();
+        autoHotelListbind(input);
+    } catch (error) {
+        console.error("Failed to fetch hotel list for autocomplete:", error);
+    }
+}
 
+/**
+ * Shows the hotel search results dropdown.
+ * @param {HTMLElement} element - The input element that was focused or typed in.
+ */
 function ShowHotelList(element) {
-    element.closest(".HotelSearchDestination").querySelector(".hideInput") ? element.closest(".HotelSearchDestination").querySelector(".hideInput").classList.remove('hideInput') : ''
-    autoHotelListbind(element)
+    const searchContainer = element.closest(".HotelSearchDestination");
+    const resultsList = searchContainer.querySelector(".hideInput");
+    if (resultsList) {
+        resultsList.classList.remove('hideInput');
+    }
+    autoHotelListbind(element);
 }
+
+/**
+ * Renders the fetched hotel list into the dropdown.
+ * @param {HTMLElement} element - The input element to anchor the dropdown to.
+ */
 function autoHotelListbind(element) {
     let html = '';
-    HotelList.map(e => {
+    HotelList.forEach(e => {
         html += `
-       <div class="HotelSearchOtionContent" onclick="ApplyHotelCity(this)">
-         <span class="material-icons"> location_on </span>
-         <a data-countryCode="${e.countryCode}" data-cityCode="${e.cityCode}" data-city_Id="${e.city_Id}"  data-cityName="${e.cityName}"  data-displayName="${e.displayName}"> ${e.displayName}</a>
-      </div>`
+           <div class="HotelSearchOtionContent" onclick="ApplyHotelCity(this)">
+             <span class="material-icons">location_on</span>
+             <a data-countryCode="${e.countryCode}" data-cityCode="${e.cityCode}" data-city_Id="${e.city_Id}" data-cityName="${e.cityName}" data-displayName="${e.displayName}">${e.displayName}</a>
+           </div>`;
     });
     element.closest(".HotelSearchDestination").querySelector(".HotelList").innerHTML = html;
 }
 
+/**
+ * Applies the selected hotel/city to the input field and hides the dropdown.
+ * @param {HTMLElement} elem - The selected city element from the list.
+ */
 function ApplyHotelCity(elem) {
-    console.log(elem)
-    let countryCode = elem.querySelector('a').getAttribute('data-countryCode');
-    let cityCode = elem.querySelector('a').getAttribute('data-cityCode');
-    let city_Id = elem.querySelector('a').getAttribute('data-city_Id');
-    let displayName = elem.querySelector('a').getAttribute('data-displayName');
+    const anchor = elem.querySelector('a');
+    const { countrycode, citycode, city_id, displayname } = anchor.dataset;
 
-    let input = document.getElementById('FromHotel');
-    input.value = displayName;
-    input.setAttribute("data-countryCode", countryCode);
-    input.setAttribute("data-cityCode", cityCode);
-    input.setAttribute("data-city_Id", city_Id);
+    const input = document.getElementById('FromHotel');
+    input.value = displayname;
+    input.setAttribute("data-countryCode", countrycode);
+    input.setAttribute("data-cityCode", citycode);
+    input.setAttribute("data-city_Id", city_id);
 
     elem.closest('.HotelDestination').classList.add('hideInput');
-};
+}
 
 
+// ---=== Nationality Search ===--- //
 
-
-
-
-///  nationality list bind 
-
+/**
+ * Shows the nationality search results dropdown.
+ * @param {HTMLElement} elem - The input element for nationality.
+ */
 function showNationality(elem) {
     elem.closest('.HotelSearchFormNationality').querySelector('.HotelNationality').classList.remove('hideInput');
     autonationalityListbind(elem);
 }
 
-getBindNationalityList()
+/**
+ * Fetches a default list of popular nationalities on page load.
+ */
 async function getBindNationalityList() {
-    const response = await fetch("https://adminapi.uat.futuretravelplatform.com/api/CountryMaster/GetSelectedCountry/EN/MA,TN,NG,EG,AE,SA,BH,QA,KW,OM", {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json', 'OrgId': '2206040706597097092' }
-    });
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    const url = `${config.adminApiUrl}/CountryMaster/GetSelectedCountry/EN/MA,TN,NG,EG,AE,SA,BH,QA,KW,OM`;
+    const headers = { 'Content-Type': 'application/json', 'OrgId': '2206040706597097092' };
+    try {
+        const request = new Request(url, { method: 'GET', headers });
+        const newRequest = UtilService.headerSetup(request);
+        const response = await fetch(newRequest);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        NationalityList = await response.json();
+    } catch (error) {
+        console.error("Failed to fetch initial nationality list:", error);
     }
-    const data = await response.json();
-    NationalityList = data
 }
+getBindNationalityList(); // Fetch on initial load
 
+/**
+ * Fetches nationalities based on user input (autocomplete).
+ * @param {HTMLInputElement} Input - The input element for nationality.
+ */
 async function GetNationalityList(Input) {
-    if (Input.value) {
-        const response = await fetch("https://adminapi.uat.futuretravelplatform.com/api/MasterSearch/GetAllCountry/EN/" + Input.value, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json', 'OrgId': '2206040706597097092' }
-        });
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        NationalityList = data
-        autonationalityListbind(Input)
+    if (!Input.value) return;
+    const url = `${config.adminApiUrl}/MasterSearch/GetAllCountry/EN/${Input.value}`;
+    const headers = { 'Content-Type': 'application/json', 'OrgId': '2206040706597097092' };
+    try {
+        const request = new Request(url, { method: 'GET', headers });
+        const newRequest = UtilService.headerSetup(request);
+        const response = await fetch(newRequest);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        NationalityList = await response.json();
+        autonationalityListbind(Input);
+    } catch (error) {
+        console.error("Failed to fetch nationality list for autocomplete:", error);
     }
 }
 
+/**
+ * Renders the fetched nationality list into the dropdown.
+ * @param {HTMLElement} elem - The input element to anchor the dropdown to.
+ */
 function autonationalityListbind(elem) {
     let html = '';
-    NationalityList.map(e => {
+    NationalityList.forEach(e => {
         html += `
-       <div class="HotelSearchOtionContent" onclick="ApplyNationality(this)">
-         <span class="material-icons"> location_on </span>
-         <a data-countryCode="${e.country_code}" data-countryName="${e.country_name}" > ${e.country_name}</a>
-      </div>`
+           <div class="HotelSearchOtionContent" onclick="ApplyNationality(this)">
+             <span class="material-icons">location_on</span>
+             <a data-countryCode="${e.country_code}" data-countryName="${e.country_name}">${e.country_name}</a>
+           </div>`;
     });
     elem.closest('.HotelSearchFormNationality').querySelector('.NationalityList').innerHTML = html;
 }
 
+/**
+ * Applies the selected nationality to the input field and hides the dropdown.
+ * @param {HTMLElement} elem - The selected nationality element from the list.
+ */
 function ApplyNationality(elem) {
-    let citycode = elem.querySelector('a').getAttribute('data-countryCode');
-    let countryName = elem.querySelector('a').getAttribute('data-countryName');
-    document.getElementById('FromNationality').value = countryName;
-    document.getElementById('FromNationality').setAttribute('data-countryCode', citycode);
+    const anchor = elem.querySelector('a');
+    const { countrycode, countryname } = anchor.dataset;
+    const input = document.getElementById('FromNationality');
+    input.value = countryname;
+    input.setAttribute('data-countryCode', countrycode);
     elem.closest('.HotelNationality').classList.add('hideInput');
 }
 
-//  caleran js for calender
 
+// ---=== Date Calendar (Caleran) Integration ===--- //
 
-var startDate, endDate, HotelStartInstance, HotelEndInstance;
-var HotelFillInputs = function () {
-    HotelStartInstance.elem.value = startDate ? startDate.locale(HotelStartInstance.config.format).format('DD MMM YYYY') : "";
-    HotelEndInstance.elem.value = endDate ? endDate.locale(HotelEndInstance.config.format).format('DD MMM YYYY') : "";
+let hotelStartDate, hotelEndDate, hotelStartInstance, hotelEndInstance;
+
+const hotelFillInputs = function () {
+    if (hotelStartInstance) hotelStartInstance.elem.value = hotelStartDate ? hotelStartDate.locale(hotelStartInstance.config.format).format('DD MMM YYYY') : "";
+    if (hotelEndInstance) hotelEndInstance.elem.value = hotelEndDate ? hotelEndDate.locale(hotelEndInstance.config.format).format('DD MMM YYYY') : "";
 };
+
 document.querySelector("#hotelStart").value = moment().format('DD MMM YYYY');
-document.querySelector("#hotelEnd").value = moment().format('DD MMM YYYY');
+document.querySelector("#hotelEnd").value = moment().add(1, 'days').format('DD MMM YYYY');
+hotelStartDate = moment();
+hotelEndDate = moment().add(1, 'days');
+calcNumberOfNights(hotelStartDate, hotelEndDate);
+
 caleran("#hotelStart", {
     startEmpty: document.querySelector("#hotelStart").value === "",
     startDate: document.querySelector("#hotelStart").value,
     endDate: document.querySelector("#hotelEnd").value,
     enableKeyboard: false,
-    minDate: new Date,
+    minDate: new Date(),
     oninit: function (instance) {
-        HotelStartInstance = instance;
+        hotelStartInstance = instance;
         if (!instance.config.startEmpty && instance.config.startDate) {
             instance.elem.value = instance.config.startDate.locale(instance.config.format).format('DD MMM YYYY');
-            startDate = instance.config.startDate.clone();
+            hotelStartDate = instance.config.startDate.clone();
         }
     },
     onbeforeshow: function (instance) {
-        if (startDate) {
-            HotelStartInstance.config.startDate = startDate;
-            HotelEndInstance.config.startDate = startDate;
+        if (hotelStartDate) {
+            hotelStartInstance.config.startDate = hotelStartDate;
+            if (hotelEndInstance) hotelEndInstance.config.startDate = hotelStartDate;
         }
-        if (endDate) {
-            HotelStartInstance.config.endDate = endDate.clone();
-            HotelEndInstance.config.endDate = endDate.clone();
+        if (hotelEndDate) {
+            hotelStartInstance.config.endDate = hotelEndDate.clone();
+            if (hotelEndInstance) hotelEndInstance.config.endDate = hotelEndDate.clone();
         }
-        HotelFillInputs();
+        hotelFillInputs();
         instance.updateHeader();
         instance.reDrawCells();
     },
     onfirstselect: function (instance, start) {
-        startDate = start.clone();
-        HotelStartInstance.globals.startSelected = false;
-        HotelStartInstance.hideDropdown();
-        HotelEndInstance.showDropdown();
-        HotelEndInstance.config.minDate = startDate.clone();
-        HotelEndInstance.config.startDate = startDate.clone();
-        HotelEndInstance.config.endDate = null;
-        HotelEndInstance.globals.startSelected = true;
-        HotelEndInstance.globals.endSelected = false;
-        HotelEndInstance.globals.firstValueSelected = true;
-        HotelEndInstance.setDisplayDate(start);
-        if (endDate && startDate.isAfter(endDate)) {
-            HotelEndInstance.globals.endDate = endDate.clone();
+        hotelStartDate = start.clone();
+        hotelEndDate = null;
+        hotelStartInstance.globals.startSelected = false;
+        hotelStartInstance.hideDropdown();
+        hotelEndInstance.showDropdown();
+        hotelEndInstance.config.minDate = hotelStartDate.clone();
+        hotelEndInstance.config.startDate = hotelStartDate.clone();
+        hotelEndInstance.config.endDate = null;
+        hotelEndInstance.globals.startSelected = true;
+        hotelEndInstance.globals.endSelected = false;
+        hotelEndInstance.globals.firstValueSelected = true;
+        hotelEndInstance.setDisplayDate(start);
+        if (hotelEndDate && hotelStartDate.isAfter(hotelEndDate)) {
+            hotelEndInstance.globals.endDate = hotelEndDate.clone();
         }
-        HotelEndInstance.updateHeader();
-        HotelEndInstance.reDrawCells();
-        HotelFillInputs();
+        hotelEndInstance.updateHeader();
+        hotelEndInstance.reDrawCells();
+        hotelFillInputs();
     }
-
 });
+
 caleran("#hotelEnd", {
     startEmpty: document.querySelector("#hotelEnd").value === "",
     startDate: document.querySelector("#hotelStart").value,
     endDate: document.querySelector("#hotelEnd").value,
     enableKeyboard: false,
     autoCloseOnSelect: true,
-    minDate: new Date,
+    minDate: new Date(),
     oninit: function (instance) {
-        HotelEndInstance = instance;
+        hotelEndInstance = instance;
         if (!instance.config.startEmpty && instance.config.endDate) {
             instance.elem.value = (instance.config.endDate.locale(instance.config.format).format('DD MMM YYYY'));
-            endDate = instance.config.endDate.clone();
+            hotelEndDate = instance.config.endDate.clone();
         }
-        calcNumberOfNights(startDate, endDate)
+        calcNumberOfNights(hotelStartDate, hotelEndDate);
     },
     onbeforeshow: function (instance) {
-        if (startDate) {
-            HotelStartInstance.config.startDate = startDate;
-            HotelEndInstance.config.startDate = startDate;
+        if (hotelStartDate) {
+            if (hotelStartInstance) hotelStartInstance.config.startDate = hotelStartDate;
+            hotelEndInstance.config.startDate = hotelStartDate;
         }
-        if (endDate) {
-            HotelStartInstance.config.endDate = endDate.clone();
-            HotelEndInstance.config.endDate = endDate.clone();
+        if (hotelEndDate) {
+            if (hotelStartInstance) hotelStartInstance.config.endDate = hotelEndDate.clone();
+            hotelEndInstance.config.endDate = hotelEndDate.clone();
         }
-        HotelFillInputs();
+        hotelFillInputs();
         instance.updateHeader();
         instance.reDrawCells();
     },
     onafterselect: function (instance, start, end) {
-        startDate = start.clone();
-        endDate = end.clone();
-        HotelEndInstance.hideDropdown();
-        HotelStartInstance.config.endDate = endDate.clone();
-        HotelStartInstance.globals.firstValueSelected = true;
-        HotelFillInputs();
-        HotelEndInstance.globals.startSelected = true;
-        HotelEndInstance.globals.endSelected = false;
-        calcNumberOfNights(startDate, endDate)
-
+        hotelStartDate = start.clone();
+        hotelEndDate = end.clone();
+        hotelEndInstance.hideDropdown();
+        if (hotelStartInstance) {
+            hotelStartInstance.config.endDate = hotelEndDate.clone();
+            hotelStartInstance.globals.firstValueSelected = true;
+        }
+        hotelFillInputs();
+        hotelEndInstance.globals.startSelected = true;
+        hotelEndInstance.globals.endSelected = false;
+        calcNumberOfNights(hotelStartDate, hotelEndDate);
     }
 });
 
-
-// hotel search query string 
-
-function searchHotel() {
-    let hotelDetails = document.getElementById('FromHotel')
-    let Nationality = document.getElementById('FromNationality').getAttribute('data-countryCode')
-    let element = document.getElementsByClassName('toast-warning')[0]
-    if (!hotelDetails) {
-        element.classList.remove('d-none')
-        element.querySelector('span').innerHTML = 'Please enter destination city'
-        hideToaster(element)
-        return
-    }
-    if (!Nationality) {
-        element.classList.remove('d-none')
-        element.querySelector('span').innerHTML = 'Please select nationality'
-        hideToaster(element)
-        return
-    }
-    let queryParams = {};
-    queryParams['CityCode'] = hotelDetails.getAttribute('data-cityCode');
-    queryParams['CityId'] = hotelDetails.getAttribute('data-city_Id');
-    queryParams['Country'] = hotelDetails.getAttribute('data-countryCode');
-    queryParams['nationality'] = Nationality;
-    queryParams['langCode'] = 'EN';
-    queryParams['checkinDate'] = moment(document.getElementById('hotelStart').value).format('DD-MMM-YYYY');
-    queryParams['checkoutDate'] = moment(document.getElementById('hotelEnd').value).format('DD-MMM-YYYY');
-
-    RoomDetails.map((e, i) => {
-        let room = []
-        room.push(parseInt(e.adult))
-        room.push(parseInt(e.child))
-        room.push(...e.childAge.map(no => parseInt(no)))
-        let roomdetails = room.join('-')
-        console.log(roomdetails)
-        queryParams[`room${i + 1}`] = roomdetails
-    })
-    // sessionStorage.setItem('SerachReqQueryObj', JSON.stringify(querystring));
-    const urlParams = new URLSearchParams(window.location.search);
-    var query = Object.keys(queryParams).map(key => key + '=' + queryParams[key]).join('&');
-    window.location.href = 'https://travel.neuholidays.com/hotel/result?' + query;
-
-};
-
+/**
+ * Calculates the difference in days between two moment objects.
+ * @param {moment} checkInDate - The start date.
+ * @param {moment} checkOutDate - The end date.
+ */
 function calcNumberOfNights(checkInDate, checkOutDate) {
-    let night = moment(checkOutDate).diff(checkInDate, 'days');
-    document.getElementsByClassName('nightCountgBox')[0].querySelector('.nightNum').innerHTML = night;
-};
+    if (checkInDate && checkOutDate) {
+        const nights = moment(checkOutDate).diff(checkInDate, 'days');
+        document.querySelector('.nightCountgBox .nightNum').innerHTML = nights > 0 ? nights : 1;
+    }
+}
+
+
+// ---=== Search Submission ===--- //
+
+/**
+ * Validates inputs, constructs the search query, and redirects to the results page.
+ */
+function searchHotel() {
+    const hotelDetails = document.getElementById('FromHotel');
+    const nationalityCode = document.getElementById('FromNationality').getAttribute('data-countryCode');
+    const toaster = document.getElementsByClassName('toast-warning')[0];
+
+    // Validation
+    if (!hotelDetails.getAttribute('data-cityCode')) {
+        toaster.classList.remove('d-none');
+        toaster.querySelector('span').innerHTML = 'Please enter destination city';
+        setTimeout(() => toaster.classList.add('d-none'), 3000);
+        return;
+    }
+    if (!nationalityCode) {
+        toaster.classList.remove('d-none');
+        toaster.querySelector('span').innerHTML = 'Please select nationality';
+        setTimeout(() => toaster.classList.add('d-none'), 3000);
+        return;
+    }
+
+    // Build Query Parameters
+    const queryParams = {
+        CityCode: hotelDetails.getAttribute('data-cityCode'),
+        CityId: hotelDetails.getAttribute('data-city_Id'),
+        Country: hotelDetails.getAttribute('data-countryCode'),
+        nationality: nationalityCode,
+        langCode: 'EN',
+        checkinDate: moment(document.getElementById('hotelStart').value).format('DD-MMM-YYYY'),
+        checkoutDate: moment(document.getElementById('hotelEnd').value).format('DD-MMM-YYYY')
+    };
+
+    RoomDetails.forEach((room, i) => {
+        const roomInfo = [
+            parseInt(room.adult, 10),
+            parseInt(room.child, 10),
+            ...room.childAge.map(age => parseInt(age, 10))
+        ];
+        queryParams[`room${i + 1}`] = roomInfo.join('-');
+    });
+
+    const queryString = new URLSearchParams(queryParams).toString();
+    // Redirect to results page
+    window.location.href = `https://travel.neuholidays.com/hotel/result?${queryString}`;
+}
